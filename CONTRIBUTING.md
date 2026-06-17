@@ -43,15 +43,8 @@ test **and** at least one adversarial test (empty input, not-found, boundary).
 ## Releases
 
 Maintainers only: run `.github/workflows/publish.yml` via `workflow_dispatch`
-for patch/minor/major. Every push to `main` publishes a canary build via OIDC.
-
-To bootstrap the first canary (before the npm trusted publisher is configured) or
-to publish one locally, run `pnpm publish:canary` (npm 2FA needs an OTP):
-
-```bash
-pnpm publish:canary --otp=123456   # publishes <version>-canary.<sha> under the @canary tag
-pnpm publish:canary --dry-run      # validate without publishing
-```
+for patch/minor/major. Every push to `main` publishes a canary build via OIDC
+trusted publishing (no token).
 
 ## Reporting Issues
 
