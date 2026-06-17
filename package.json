@@ -1,0 +1,81 @@
+{
+  "name": "@vllnt/next-llms",
+  "version": "0.1.0",
+  "description": "AI discoverability for Next.js sites — generate llms.txt / llms-full.txt manifests and serve any page as raw markdown",
+  "license": "MIT",
+  "type": "module",
+  "packageManager": "pnpm@9.15.4",
+  "files": [
+    "dist",
+    "src"
+  ],
+  "exports": {
+    "./package.json": "./package.json",
+    ".": {
+      "types": "./dist/index.d.ts",
+      "default": "./dist/index.js"
+    }
+  },
+  "types": "./dist/index.d.ts",
+  "module": "./dist/index.js",
+  "main": "./dist/index.js",
+  "scripts": {
+    "build": "tsc --project ./tsconfig.build.json",
+    "typecheck": "tsc --noEmit",
+    "typecheck:ci": "tsc --noEmit --project tsconfig.ci.json",
+    "lint": "eslint .",
+    "format": "prettier --write .",
+    "format:check": "prettier --check .",
+    "test": "vitest run --passWithNoTests",
+    "test:watch": "vitest --typecheck --clearScreen false",
+    "test:coverage": "vitest run --coverage --coverage.reporter=text",
+    "generate:llms": "node scripts/generate-llms.mjs",
+    "preversion": "pnpm install --frozen-lockfile && pnpm build && pnpm test:coverage && pnpm typecheck && pnpm generate:llms"
+  },
+  "dependencies": {},
+  "devDependencies": {
+    "@types/node": "^20.0.0",
+    "@vitest/coverage-v8": "^4.1.8",
+    "@vllnt/eslint-config": "^1.0.0",
+    "@vllnt/typescript": "^1.0.0",
+    "eslint": "^9.0.0",
+    "prettier": "^3.4.0",
+    "typescript": "^5.7.0",
+    "vitest": "^4.1.8"
+  },
+  "homepage": "https://github.com/vllnt/next-llms#readme",
+  "bugs": {
+    "url": "https://github.com/vllnt/next-llms/issues"
+  },
+  "author": {
+    "name": "bntvllnt",
+    "url": "https://bntvllnt.com"
+  },
+  "funding": {
+    "type": "github",
+    "url": "https://github.com/sponsors/bntvllnt"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/vllnt/next-llms"
+  },
+  "engines": {
+    "node": ">=18"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "sideEffects": false,
+  "keywords": [
+    "nextjs",
+    "next",
+    "llms-txt",
+    "llms.txt",
+    "ai",
+    "llm",
+    "seo",
+    "app-router",
+    "markdown",
+    "discoverability"
+  ]
+}
