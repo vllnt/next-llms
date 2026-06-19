@@ -1,10 +1,6 @@
 import { describe, expect, it } from "vitest";
 
-import {
-  createMarkdownRoute,
-  generateLlmsFullText,
-  generateLlmsText,
-} from "./index.js";
+import { createMarkdownRoute, generateLlmsText } from "./index.js";
 
 describe("generateLlmsText", () => {
   it("renders a full manifest with summary, details, sections, and Optional", () => {
@@ -54,53 +50,6 @@ describe("generateLlmsText", () => {
 
   it("omits the Optional section when optional is an empty array", () => {
     expect(generateLlmsText({ title: "T", optional: [] })).toBe("# T");
-  });
-});
-
-describe("generateLlmsFullText", () => {
-  it("inlines page content under sections, with and without source URLs", () => {
-    const out = generateLlmsFullText({
-      title: "Acme",
-      summary: "Full text.",
-      details: "Intro.",
-      sections: [
-        {
-          title: "Docs",
-          pages: [
-            {
-              title: "Quickstart",
-              url: "/docs/quickstart",
-              content: "# QS\n\nDo this.",
-            },
-            { title: "Reference", content: "# Ref\n\nDetails." },
-          ],
-        },
-      ],
-    });
-
-    expect(out).toBe(
-      [
-        "# Acme",
-        "> Full text.",
-        "Intro.",
-        "## Docs\n\n### Quickstart\n\nSource: /docs/quickstart\n\n# QS\n\nDo this.\n\n### Reference\n\n# Ref\n\nDetails.",
-      ].join("\n\n"),
-    );
-  });
-
-  it("renders a minimal full manifest (title + empty sections)", () => {
-    expect(generateLlmsFullText({ title: "Bare", sections: [] })).toBe(
-      "# Bare",
-    );
-  });
-
-  it("renders a section heading with no pages when the page list is empty", () => {
-    expect(
-      generateLlmsFullText({
-        title: "T",
-        sections: [{ title: "Empty", pages: [] }],
-      }),
-    ).toBe("# T\n\n## Empty");
   });
 });
 

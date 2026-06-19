@@ -43,44 +43,6 @@ export type LlmsConfig = {
 };
 
 /**
- * A page whose full markdown content goes inline into `llms-full.txt`.
- */
-export type LlmsFullPage = {
-  /** Page title, rendered as a `### {title}` heading. */
-  title: string;
-  /** Optional source URL, rendered as a `Source: {url}` line under the title. */
-  url?: string;
-  /** The page's full markdown content. */
-  content: string;
-};
-
-/**
- * A named group of pages in `llms-full.txt`, rendered as a `## {title}` section.
- */
-export type LlmsFullSection = {
-  /** Section heading, rendered as `## {title}`. */
-  title: string;
-  /** Pages whose content goes inline under the section. */
-  pages: LlmsFullPage[];
-};
-
-/**
- * Input for {@link generateLlmsFullText} — the expanded `llms-full.txt` manifest.
- *
- * @see https://llmstxt.org
- */
-export type LlmsFullConfig = {
-  /** Site/project name, rendered as the `# {title}` H1. */
-  title: string;
-  /** One-line summary, rendered as a `> {summary}` blockquote. */
-  summary?: string;
-  /** Free-form markdown shown after the blockquote. */
-  details?: string;
-  /** Sections whose pages go inline in full. */
-  sections: LlmsFullSection[];
-};
-
-/**
  * Maps a route slug to its markdown content, or `null` if there is no page for
  * the slug. The slug is the path segments with any trailing `.md` stripped.
  */

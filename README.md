@@ -7,7 +7,7 @@
 # @vllnt/next-llms
 
 Make your Next.js site legible to AI agents — generate a spec-compliant
-`llms.txt` / `llms-full.txt` manifest and serve any page as raw markdown.
+`llms.txt` manifest and serve any page as raw markdown.
 
 ```ts
 // app/llms.txt/route.ts
@@ -30,18 +30,15 @@ export function GET() {
 }
 ```
 
-Emit the `llms.txt` index and its `llms-full.txt` companion, and expose any
-page's markdown at `/path.md` so agents skip HTML parsing. Zero runtime
-dependencies — pure Web-standard APIs that run in any Next.js runtime (and
-Remix, Hono, Deno, …).
+Emit the `llms.txt` index and expose any page's markdown at `/path.md` so agents
+skip HTML parsing. Zero runtime dependencies — pure Web-standard APIs that run
+in any Next.js runtime (and Remix, Hono, Deno, …).
 
 ## Features
 
 - **Spec-compliant `llms.txt`** — `generateLlmsText` emits the llmstxt.org
   shape: an `#` title, a `>` blockquote, `## Section` link lists, and a
   droppable `## Optional` section.
-- **`llms-full.txt` companion** — `generateLlmsFullText` inlines every page's
-  full markdown so an agent reads the whole site in one request.
 - **Raw-markdown routes** — `createMarkdownRoute` serves any page as
   `text/markdown`, stripping a trailing `.md` and resolving the slug through
   your own content source.
@@ -80,7 +77,6 @@ with `Content-Type: text/markdown`, or `404` when the resolver returns `null`.
 | Export                                    | Kind     | Result                                    |
 | ----------------------------------------- | -------- | ----------------------------------------- |
 | `generateLlmsText(config)`                | function | `string` — the `llms.txt` index           |
-| `generateLlmsFullText(config)`            | function | `string` — the `llms-full.txt` bundle     |
 | `createMarkdownRoute(resolver, options?)` | factory  | `(request: Request) => Promise<Response>` |
 
 Full reference: [docs/API.md](docs/API.md).
