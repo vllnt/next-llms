@@ -6,11 +6,7 @@ Remix, Hono, Deno. Node `>=18`. Zero runtime dependencies.
 All exports are available from the package root:
 
 ```ts
-import {
-  generateLlmsText,
-  generateLlmsFullText,
-  createMarkdownRoute,
-} from "@vllnt/next-llms";
+import { generateLlmsText, createMarkdownRoute } from "@vllnt/next-llms";
 ```
 
 ---
@@ -61,32 +57,6 @@ generateLlmsText({
   optional: [{ title: "Changelog", url: "/changelog.md" }],
 });
 ```
-
----
-
-## `generateLlmsFullText(config)`
-
-Render an `llms-full.txt` manifest — the same header as `llms.txt`, followed by
-every page's full markdown inlined.
-
-```ts
-function generateLlmsFullText(config: LlmsFullConfig): string;
-```
-
-Hierarchy: `# {title}` (site) → `## {section}` → `### {page}` + the page body. A
-page with a `url` gets a `Source: {url}` line under its heading.
-
-### `LlmsFullConfig`
-
-| Field      | Type                | Notes                                    |
-| ---------- | ------------------- | ---------------------------------------- |
-| `title`    | `string`            | Required. Rendered as the `#` H1.        |
-| `summary`  | `string?`           | Rendered as a `>` blockquote.            |
-| `details`  | `string?`           | Free-form markdown after the blockquote. |
-| `sections` | `LlmsFullSection[]` | Required. Sections whose pages inline.   |
-
-`LlmsFullSection` = `{ title: string; pages: LlmsFullPage[] }`. `LlmsFullPage` =
-`{ title: string; url?: string; content: string }`.
 
 ---
 

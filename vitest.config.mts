@@ -11,12 +11,7 @@ export default defineConfig({
       provider: "v8",
       // List every source file that must be covered. Adding a source file here
       // without a matching test fails CI — that is the 100% coverage gate.
-      include: [
-        "src/index.ts",
-        "src/llms-text.ts",
-        "src/llms-full.ts",
-        "src/markdown-route.ts",
-      ],
+      include: ["src/index.ts", "src/llms-text.ts", "src/markdown-route.ts"],
       thresholds: {
         statements: 100,
         branches: 100,

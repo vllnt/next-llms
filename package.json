@@ -1,7 +1,7 @@
 {
   "name": "@vllnt/next-llms",
   "version": "0.1.0",
-  "description": "AI discoverability for Next.js sites — generate llms.txt / llms-full.txt manifests and serve any page as raw markdown",
+  "description": "AI discoverability for Next.js sites — generate an llms.txt manifest and serve any page as raw markdown",
   "license": "MIT",
   "type": "module",
   "packageManager": "pnpm@9.15.4",
@@ -29,8 +29,7 @@
     "test": "vitest run --passWithNoTests",
     "test:watch": "vitest --typecheck --clearScreen false",
     "test:coverage": "vitest run --coverage --coverage.reporter=text",
-    "generate:llms": "node scripts/generate-llms.mjs",
-    "preversion": "pnpm install --frozen-lockfile && pnpm build && pnpm test:coverage && pnpm typecheck && pnpm generate:llms"
+    "preversion": "pnpm install --frozen-lockfile && pnpm build && pnpm test:coverage && pnpm typecheck"
   },
   "dependencies": {},
   "devDependencies": {
