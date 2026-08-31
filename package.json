@@ -23,14 +23,15 @@
     "build": "tsc --project ./tsconfig.build.json",
     "typecheck": "tsc --noEmit",
     "typecheck:ci": "tsc --noEmit --project tsconfig.ci.json",
-    "lint": "eslint .",
+    "lint": "pnpm check:agents && eslint .",
     "format": "prettier --write .",
     "format:check": "prettier --check .",
     "test": "vitest run --passWithNoTests",
     "test:watch": "vitest --typecheck --clearScreen false",
     "test:coverage": "vitest run --coverage --coverage.reporter=text",
     "generate:llms": "node scripts/generate-llms.mjs",
-    "preversion": "pnpm install --frozen-lockfile && pnpm build && pnpm test:coverage && pnpm typecheck && pnpm generate:llms"
+    "preversion": "pnpm install --frozen-lockfile && pnpm build && pnpm test:coverage && pnpm typecheck && pnpm generate:llms",
+    "check:agents": "node -e \"const f=require('node:fs');if(!f.existsSync('AGENTS.md')||f.existsSync('CLAUDE.md')||f.existsSync('.claude'))process.exit(1)\""
   },
   "devDependencies": {
     "@types/node": "^20.0.0",

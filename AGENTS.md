@@ -3,8 +3,12 @@
 AI discoverability for Next.js sites: generate `llms.txt` / `llms-full.txt`
 manifests and serve any page as raw markdown. First Type D (`@vllnt/next-*`)
 package in the vllnt OSS fleet. It follows the vllnt standards (see the
-`oss-packages` hub `.claude/rules/nextjs-standard.md` + `component-standard.md`
-Universal set).
+`oss-packages` hub `AGENTS.md` universal package contract).
+
+## Agent instructions
+
+`AGENTS.md` is the sole agent-instruction source for this repository. Do not add
+`CLAUDE.md` or `.claude` content.
 
 ## Architecture
 
@@ -71,22 +75,12 @@ over Web-standard `Request` / `Response` / `URL`.
   `@vllnt/*` only — bites only if a dep is ever added; this package has none).
 - Tests: `vitest` (node env), 100% coverage gate.
 
-## Project rules
+## Repository policy
 
-The universal vllnt engineering rules ship in `.claude/rules/` — **synced from
-the `oss-packages` hub** (single source; edit them there, not here):
-
-| Rule                                                   | Covers                                                         |
-| ------------------------------------------------------ | -------------------------------------------------------------- |
-| [`code-style.md`](.claude/rules/code-style.md)         | Match-surrounding-code, smallest change that works, typed APIs |
-| [`git-workflow.md`](.claude/rules/git-workflow.md)     | Branch-first, signed no-reply commits, landing mode            |
-| [`commit-privacy.md`](.claude/rules/commit-privacy.md) | No-reply commit identity; never leak a personal email          |
-| [`security.md`](.claude/rules/security.md)             | Secrets, boundary validation, OWASP, dependency review         |
-| [`docs-sync.md`](.claude/rules/docs-sync.md)           | **BLOCKING** docs stay current with every commit               |
-
-The full BLOCKING standard (Universal set + Next.js conventions) and fleet
-governance live in the hub (`oss-packages` `.claude/rules/nextjs-standard.md` +
-`component-standard.md`) — not duplicated into this repo.
+- Match surrounding code and make the smallest coherent change.
+- Keep public APIs typed, validate trust boundaries, and never commit secrets.
+- Use a feature branch, signed no-reply commits, and the repository's required checks.
+- Update affected documentation in the same commit and grep stale values.
 
 ## Docs sync
 
@@ -95,7 +89,7 @@ governance live in the hub (`oss-packages` `.claude/rules/nextjs-standard.md` +
 | Public API (`generateLlmsText` / `generateLlmsFullText` / `createMarkdownRoute`, args, returns) | README API table, `docs/API.md`, `llms.txt`, regenerate `llms-full.txt` |
 | Config types / options (`LlmsConfig`, `MarkdownRouteOptions`)                                   | README, `docs/API.md`                                                   |
 | Response behavior (status, headers, cache defaults)                                             | `docs/API.md` behavior table, README                                    |
-| Naming (package, repo, exports)                                                                 | README, `package.json`, `llms.txt`, this file (+ `CLAUDE.md` mirror)    |
+| Naming (package, repo, exports)                                                                 | README, `package.json`, `llms.txt`, this file    |
 | Version                                                                                         | `CHANGELOG.md` entry, version badge                                     |
 | Any change                                                                                      | `pnpm generate:llms` to keep `llms-full.txt` current                    |
 
