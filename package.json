@@ -32,15 +32,15 @@
     "generate:llms": "node scripts/generate-llms.mjs",
     "preversion": "pnpm install --frozen-lockfile && pnpm build && pnpm test:coverage && pnpm typecheck && pnpm generate:llms"
   },
-  "dependencies": {},
   "devDependencies": {
     "@types/node": "^20.0.0",
+    "@typescript/native": "npm:typescript@7.0.2",
     "@vitest/coverage-v8": "^4.1.8",
-    "@vllnt/eslint-config": "^1.0.0",
-    "@vllnt/typescript": "^1.0.0",
+    "@vllnt/eslint-config": "2.0.0-canary.87019a5",
+    "@vllnt/typescript": "2.0.0",
     "eslint": "^9.0.0",
     "prettier": "^3.4.0",
-    "typescript": "^5.7.0",
+    "typescript": "npm:@typescript/typescript6@^6.0.2",
     "vitest": "^4.1.8"
   },
   "homepage": "https://github.com/vllnt/next-llms#readme",
