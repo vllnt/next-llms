@@ -26,7 +26,7 @@ publishing, no Convex.
 - `scaffold-repo.2` — `done` — CI (`ci.yml` lint/typecheck/test/build), canary
   `publish.yml` (`@canary`-only, OIDC provenance, `CANARY_ENABLED`-gated),
   `email-guard.yml`, `.github/` templates.
-- `scaffold-repo.3` — `done` — `.claude/rules/` universal subset synced from the
+- `scaffold-repo.3` — `done` — `AGENTS.md` repository policy from the
   hub.
 
 ## ship-v0-core — `in-progress`
@@ -78,9 +78,9 @@ itself.
 
 ## next-standard — `planned`
 
-This repo is the reference implementation for the hub `nextjs-standard.md`.
+This repo is the reference implementation for the hub `AGENTS.md` Type-D guidance.
 
-- `next-standard.1` — `planned` — fill the hub `nextjs-standard.md` TBD section
+- `next-standard.1` — `planned` — fill the hub `AGENTS.md` Type-D guidance TBD section
   from this repo's real decisions (peer deps only when imported, node test env,
   reference repo = `next-llms`, exports map).
 

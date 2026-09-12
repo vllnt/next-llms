@@ -4,6 +4,15 @@ All notable changes to this project are documented here. The format is based on
 [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and this project
 adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [Unreleased]
+
+### Removed
+
+- **Breaking:** removed `generateLlmsFullText` and the `LlmsFullConfig`,
+  `LlmsFullPage`, and `LlmsFullSection` types. Use `generateLlmsText` to link
+  to pages served by `createMarkdownRoute` instead.
+- Removed the repository's `llms-full.txt` artifact and `generate:llms` script.
+
 ## [0.1.0] - 2026-06-17
 
 ### Added
@@ -12,6 +21,9 @@ adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 - `generateLlmsText(config)` — generate a spec-compliant `llms.txt` index: an
   `#` title, a `>` blockquote, optional free prose, `## Section` link lists, and
   a droppable `## Optional` section (per the llmstxt.org specification).
+- `generateLlmsFullText(config)` — generate the `llms-full.txt` companion: the
+  same header followed by every page's full markdown inlined under `## Section`
+  → `### Page` headings.
 - `createMarkdownRoute(resolver, options?)` — a Web-standard
   `(request) => Promise<Response>` App Router route handler that strips a
   trailing `.md`, resolves the slug, and returns `text/markdown` with a
