@@ -4,6 +4,15 @@ All notable changes to this project are documented here. The format is based on
 [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and this project
 adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [Unreleased]
+
+### Removed
+
+- **Breaking:** removed `generateLlmsFullText` and the `LlmsFullConfig`,
+  `LlmsFullPage`, and `LlmsFullSection` types. Use `generateLlmsText` to link
+  to pages served by `createMarkdownRoute` instead.
+- Removed the repository's `llms-full.txt` artifact and `generate:llms` script.
+
 ## [0.1.0] - 2026-06-17
 
 ### Added

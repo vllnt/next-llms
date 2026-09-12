@@ -1,16 +1,13 @@
 # @vllnt/next-llms
 
-> AI discoverability for Next.js sites — generate llms.txt / llms-full.txt
-> manifests and serve any page as raw markdown.
+> AI discoverability for Next.js sites — generate llms.txt manifests and serve
+> any page as raw markdown.
 
 `@vllnt/next-llms` is a publishable, zero-dependency TypeScript package for
-Next.js (App Router) and any Web-standard runtime. It exposes three functions.
+Next.js (App Router) and any Web-standard runtime. It exposes two functions.
 `generateLlmsText(config)` returns an `llms.txt` index string in the llmstxt.org
 shape — an `#` title, a `>` blockquote, optional free prose, `## Section` link
 lists (`- [title](url): notes`), and a droppable `## Optional` section.
-`generateLlmsFullText(config)` returns the `llms-full.txt` companion — the same
-header followed by every page's full markdown inlined under `## Section` →
-`### Page` headings (a `Source: {url}` line when a page has a URL).
 `createMarkdownRoute(resolver, options?)` returns a Web-standard
 `(request) => Promise<Response>` route handler: it URL-decodes the pathname,
 strips a trailing `.md`, calls the resolver with the slug, and returns `200`
@@ -31,4 +28,3 @@ handler imports nothing from `next`; `null` is the explicit not-found sentinel.
 - [Security Policy](SECURITY.md): Vulnerability reporting policy
 - [Code of Conduct](CODE_OF_CONDUCT.md): Community participation guidelines
 - [License](LICENSE): MIT license
-- [Full source bundle](llms-full.txt): Aggregated README, changelog, API docs, and source files
