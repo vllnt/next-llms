@@ -18,8 +18,8 @@ importers:
         specifier: ^4.1.8
         version: 4.1.9(vitest@4.1.9)
       '@vllnt/eslint-config':
-        specifier: 2.0.0-canary.87019a5
-        version: 2.0.0-canary.87019a5(@typescript-eslint/parser@8.68.0(@typescript/typescript6@6.0.2)(eslint@9.39.4))(@typescript/typescript6@6.0.2)(convex@1.41.0)(eslint@9.39.4)(prettier@3.8.4)(turbo@2.9.18)
+        specifier: 2.0.0
+        version: 2.0.0(@typescript-eslint/parser@8.68.0(@typescript/typescript6@6.0.2)(eslint@9.39.4))(@typescript/typescript6@6.0.2)(convex@1.41.0)(eslint@9.39.4)(prettier@3.8.4)(turbo@2.9.18)
       '@vllnt/typescript':
         specifier: 2.0.0
         version: 2.0.0(@typescript/typescript6@6.0.2)
@@ -827,8 +827,8 @@ packages:
   '@vitest/utils@4.1.9':
     resolution: {integrity: sha512-A51o8ymO5PpqlWNnBP9ZHPXDIpuMtTLlGSjN7la4US+LJzoUMyhwjA5QXlm39JexgwHKW4Xjs8Z2d3dLCXOeuA==}
 
-  '@vllnt/eslint-config@2.0.0-canary.87019a5':
-    resolution: {integrity: sha512-U9RuVMwYLp4AH2FFn4Dwnc6abi2+5/2K56Rfrm+p5bgrmZTuCjH1Knp0LCM+4UsN5lEksE524476qOkv+9k1gA==}
+  '@vllnt/eslint-config@2.0.0':
+    resolution: {integrity: sha512-AW0sYvGPAqA0lvnGSd8jwZMlbYL6cqTGmIcXkHWsGHuroAiubAqnpQ/7HwK2JD8YVlWjPTbVZp5bzMyeU+hbjw==}
     engines: {node: '>=20'}
     peerDependencies:
       eslint: '>=9'
@@ -1212,9 +1212,9 @@ packages:
     peerDependencies:
       eslint: '>=2.0.0'
 
-  eslint-plugin-functional@10.0.0:
-    resolution: {integrity: sha512-D/BWdGUvPz5uIC+kZM1BWrELhjHpDiYxIYjzF7a6TZ62KINajjKgOiSYGbGv4fpMT1enEC9yG+0kOaIRTZzpTg==}
-    engines: {node: '>=v20.0.0'}
+  eslint-plugin-functional@9.0.5:
+    resolution: {integrity: sha512-RYbNpGkGu5mSN7xlezyeE7TE3S9rsliAS5FOorZoxn7126UTslcQnoVOIAOA6fMOlz6dNG3x3cd3tuzrHM6mRA==}
+    engines: {node: '>=v18.18.0'}
     peerDependencies:
       eslint: ^9.0.0 || ^10.0.0
       typescript: '>=4.7.4'
@@ -3129,7 +3129,7 @@ snapshots:
       convert-source-map: 2.0.0
       tinyrainbow: 3.1.0
 
-  '@vllnt/eslint-config@2.0.0-canary.87019a5(@typescript-eslint/parser@8.68.0(@typescript/typescript6@6.0.2)(eslint@9.39.4))(@typescript/typescript6@6.0.2)(convex@1.41.0)(eslint@9.39.4)(prettier@3.8.4)(turbo@2.9.18)':
+  '@vllnt/eslint-config@2.0.0(@typescript-eslint/parser@8.68.0(@typescript/typescript6@6.0.2)(eslint@9.39.4))(@typescript/typescript6@6.0.2)(convex@1.41.0)(eslint@9.39.4)(prettier@3.8.4)(turbo@2.9.18)':
     dependencies:
       '@convex-dev/eslint-plugin': 4.0.0(@typescript/typescript6@6.0.2)(convex@1.41.0)(eslint@9.39.4)
       '@eslint/js': 9.39.5
@@ -3138,7 +3138,7 @@ snapshots:
       eslint-config-prettier: 10.1.8(eslint@9.39.4)
       eslint-plugin-boundaries: 5.4.0(@typescript-eslint/parser@8.68.0(@typescript/typescript6@6.0.2)(eslint@9.39.4))(eslint@9.39.4)
       eslint-plugin-css-modules: 2.12.0(eslint@9.39.4)
-      eslint-plugin-functional: 10.0.0(@typescript/typescript6@6.0.2)(eslint@9.39.4)
+      eslint-plugin-functional: 9.0.5(@typescript/typescript6@6.0.2)(eslint@9.39.4)
       eslint-plugin-jsx-a11y: 6.10.2(eslint@9.39.4)
       eslint-plugin-perfectionist: 5.11.0(@typescript/typescript6@6.0.2)(eslint@9.39.4)
       eslint-plugin-prettier: 5.5.6(eslint-config-prettier@10.1.8(eslint@9.39.4))(eslint@9.39.4)(prettier@3.8.4)
@@ -3616,7 +3616,7 @@ snapshots:
       gonzales-pe: 4.3.0
       lodash: 4.18.1
 
-  eslint-plugin-functional@10.0.0(@typescript/typescript6@6.0.2)(eslint@9.39.4):
+  eslint-plugin-functional@9.0.5(@typescript/typescript6@6.0.2)(eslint@9.39.4):
     dependencies:
       '@typescript-eslint/utils': 8.69.0(@typescript/typescript6@6.0.2)(eslint@9.39.4)
       deepmerge-ts: 7.1.5
