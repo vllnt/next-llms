@@ -6,6 +6,12 @@ adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
 
+### Changed
+
+- Clarify canary installation and release availability, document explicit
+  private caching for personalized content, and expand the maintained `llms.txt`
+  index.
+
 ### Removed
 
 - **Breaking:** removed `generateLlmsFullText` and the `LlmsFullConfig`,
