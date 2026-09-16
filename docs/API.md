@@ -3,6 +3,10 @@
 **Compatibility:** any Web-standard runtime — Next.js App Router (Edge or Node),
 Remix, Hono, Deno. Node `>=18`. Zero runtime dependencies.
 
+This reference follows current main/canary, not the older prerelease on npm
+latest. See [release channels](../README.md#installation). The former
+`generateLlmsFullText` export is no longer available on current main.
+
 All exports are available from the package root:
 
 ```ts
@@ -91,7 +95,9 @@ path segments, URL-decoded, with any trailing `.md` removed.
 
 Default `Cache-Control`:
 `public, max-age=3600, s-maxage=86400, stale-while-revalidate=604800` — override
-with `options.cacheControl`.
+with `options.cacheControl`. For private or personalized responses, explicitly
+use `{ cacheControl: "private, no-store" }` and authorize access in the
+resolver. The public default is not suitable for authenticated content.
 
 ### Example
 

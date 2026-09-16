@@ -52,10 +52,15 @@ in any Next.js runtime (and Remix, Hono, Deno, …).
 ## Installation
 
 ```bash
-pnpm add @vllnt/next-llms
+pnpm add @vllnt/next-llms@canary
 ```
 
-No peer dependencies.
+Node.js `>=18`; no peer dependencies. This README follows current main and the
+`canary` channel (`0.1.0-canary.3cfe2be` at this audit). npm `latest` also
+points to a prerelease, but an older one (`0.1.0-canary.bca5ab7`), so an
+untagged install does not select current main. There is no stable release on
+`latest` yet. Pin the resolved prerelease and test upgrades. Current main
+removed the older `generateLlmsFullText` API; use the two exports below.
 
 ## Usage
 
@@ -79,7 +84,9 @@ with `Content-Type: text/markdown`, or `404` when the resolver returns `null`.
 | `generateLlmsText(config)`                | function | `string` — the `llms.txt` index           |
 | `createMarkdownRoute(resolver, options?)` | factory  | `(request: Request) => Promise<Response>` |
 
-Full reference: [docs/API.md](docs/API.md).
+Full reference: [docs/API.md](docs/API.md). Also see the [LLM index](llms.txt),
+[changelog](CHANGELOG.md), and
+[issue tracker](https://github.com/vllnt/next-llms/issues).
 
 ## Security
 
@@ -87,9 +94,12 @@ Full reference: [docs/API.md](docs/API.md).
   resolver returns.
 - Your resolver is the boundary — validate and authorize the slug before
   returning content.
-- Server-controlled cache headers — defaults are safe and overridable per route.
+- Successful responses default to **public caching** (one hour in browsers, one
+  day in shared caches). For private or personalized content, explicitly pass
+  `{ cacheControl: "private, no-store" }`; authorization alone does not disable
+  caching.
 
-See [docs/API.md](docs/API.md).
+See [docs/API.md](docs/API.md) and the [security reporting policy](SECURITY.md).
 
 ## Testing
 
