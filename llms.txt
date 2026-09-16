@@ -15,6 +15,14 @@ strips a trailing `.md`, calls the resolver with the slug, and returns `200`
 (an empty string is content), or `404` `text/plain` when it returns `null`. The
 handler imports nothing from `next`; `null` is the explicit not-found sentinel.
 
+Current main/canary exposes the two functions above; the older
+`generateLlmsFullText` API has been removed. At this audit, npm latest is the
+older prerelease `0.1.0-canary.bca5ab7`, while canary is
+`0.1.0-canary.3cfe2be`. Install `@vllnt/next-llms@canary` for this reference and
+pin/test the resolved version. Node.js >=18; no peer dependencies.
+Successful responses use public caching by default. Authorize in the resolver and
+set `cacheControl: "private, no-store"` for private/personalized content.
+
 ## Docs
 
 - [README](README.md): Overview, installation, usage examples
