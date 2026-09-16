@@ -26,19 +26,25 @@ publishing, no Convex.
 - `scaffold-repo.2` — `done` — CI (`ci.yml` lint/typecheck/test/build), canary
   `publish.yml` (`@canary`-only, OIDC provenance, `CANARY_ENABLED`-gated),
   `email-guard.yml`, `.github/` templates.
-- `scaffold-repo.3` — `done` — `AGENTS.md` repository policy from the
-  hub.
+- `scaffold-repo.3` — `done` — `AGENTS.md` repository policy from the hub.
 
 ## ship-v0-core — `in-progress`
 
-The three public functions at 0.1.0 (canary), 100% coverage, zero runtime deps.
+Historical scope: three public functions at 0.1.0 (canary), 100% coverage, zero
+runtime deps. **Current-state note:** merged
+[PR #1](https://github.com/vllnt/next-llms/pull/1) removed
+`generateLlmsFullText` and the repository full-text artifact. Current main
+exports `generateLlmsText` and `createMarkdownRoute`; the older npm latest
+prerelease predates that removal. The original task descriptions below are
+retained as history, not a promise of the current export surface. See
+[installation and release channels](README.md#installation).
 
 - `ship-v0-core.1` — `in-progress` — `generateLlmsText(config)` → llms.txt index
   (H1, blockquote, free prose, `## Section` link lists, droppable `## Optional`)
   per the llmstxt.org spec.
-- `ship-v0-core.2` — `in-progress` — `generateLlmsFullText(config)` →
-  llms-full.txt (H1 + blockquote + each section's pages inlined with title +
-  source link).
+- `ship-v0-core.2` — `dropped` — removed by PR #1 after initial implementation;
+  historical scope: `generateLlmsFullText(config)` → llms-full.txt (H1 +
+  blockquote + each section's pages inlined with title + source link).
 - `ship-v0-core.3` — `in-progress` — `createMarkdownRoute(resolver, options)` →
   a Web-standard `(request) => Promise<Response>` App Router route handler:
   strips a trailing `.md`, resolves the slug, returns `text/markdown` with cache
@@ -78,11 +84,12 @@ itself.
 
 ## next-standard — `planned`
 
-This repo is the reference implementation for the hub `AGENTS.md` Type-D guidance.
+This repo is the reference implementation for the hub `AGENTS.md` Type-D
+guidance.
 
-- `next-standard.1` — `planned` — fill the hub `AGENTS.md` Type-D guidance TBD section
-  from this repo's real decisions (peer deps only when imported, node test env,
-  reference repo = `next-llms`, exports map).
+- `next-standard.1` — `planned` — fill the hub `AGENTS.md` Type-D guidance TBD
+  section from this repo's real decisions (peer deps only when imported, node
+  test env, reference repo = `next-llms`, exports map).
 
 ## first-stable-release — `blocked`
 
