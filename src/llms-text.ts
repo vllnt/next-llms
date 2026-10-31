@@ -1,8 +1,8 @@
 import type { LlmsConfig, LlmsLink, LlmsSection } from "./types.js";
 
 const UNSAFE_URL_SCHEME = /^(?:javascript|data|vbscript):/i;
-// eslint-disable-next-line no-control-regex -- strips control characters browsers ignore inside a scheme
-const SCHEME_NOISE = /[\u0000-\u0020]/g;
+/** UTF-16 code units U+0000 to U+0020 (controls and space), which browsers ignore inside a URL scheme. */
+const SCHEME_NOISE = /[^\u0021-\uFFFF]/g;
 const LINE_BREAKS = /\s*[\n\r\u2028\u2029]+\s*/g;
 
 /** Percent-encode one character that would end a Markdown link destination. */
