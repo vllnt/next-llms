@@ -33,15 +33,15 @@
     "check:agents": "node -e \"const f=require('node:fs');if(!f.existsSync('AGENTS.md')||f.existsSync('CLAUDE.md')||f.existsSync('.claude'))process.exit(1)\""
   },
   "devDependencies": {
-    "@types/node": "^20.0.0",
+    "@types/node": "^24.19.2",
     "@typescript/native": "npm:typescript@7.0.2",
-    "@vitest/coverage-v8": "^4.1.8",
+    "@vitest/coverage-v8": "^5.0.5",
     "@vllnt/eslint-config": "2.0.0",
     "@vllnt/typescript": "2.0.0",
     "eslint": "^9.0.0",
-    "prettier": "^3.4.0",
+    "prettier": "^3.9.10",
     "typescript": "npm:@typescript/typescript6@^6.0.2",
-    "vitest": "^4.1.8"
+    "vitest": "^5.0.5"
   },
   "homepage": "https://github.com/vllnt/next-llms#readme",
   "bugs": {
@@ -77,5 +77,11 @@
     "app-router",
     "markdown",
     "discoverability"
-  ]
+  ],
+  "pnpm": {
+    "overrides": {
+      "deepmerge-ts@<8.0.0": "8.0.2",
+      "handlebars@<4.7.10": "4.7.10"
+    }
+  }
 }
