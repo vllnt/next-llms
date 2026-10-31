@@ -3,9 +3,8 @@
 **Compatibility:** any Web-standard runtime — Next.js App Router (Edge or Node),
 Remix, Hono, Deno. Node `>=18`. Zero runtime dependencies.
 
-This reference follows current main/canary, not the older prerelease on npm
-latest. See [release channels](../README.md#installation). The former
-`generateLlmsFullText` export is no longer available on current main.
+See [release channels](../README.md#installation). `generateLlmsFullText` from
+early canary builds is not part of the stable API.
 
 All exports are available from the package root:
 
@@ -32,6 +31,13 @@ Output layout (blocks joined by a blank line, no trailing newline):
 4. One `## {section.title}` block per entry in `sections`, each followed by its
    `- [title](url): notes` link list (`: notes` omitted when absent).
 5. A `## Optional` block, when `optional` is a non-empty array.
+
+Escaping and validation: line breaks in titles, summary and notes collapse to a
+space; `[`, `]` and `\` in link titles are backslash-escaped; whitespace, `(`,
+`)`, `<`, `>` and `\` in URLs are percent-encoded. A blank `title`, section
+title, link title or link `url`, or a `url` using `javascript:`, `data:` or
+`vbscript:`, throws a `TypeError`. `details` is free-form markdown and is
+emitted unchanged.
 
 ### `LlmsConfig`
 
@@ -90,8 +96,16 @@ path segments, URL-decoded, with any trailing `.md` removed.
 | `/docs/intro.md`             | `"# Intro…"`     | `200`, `Content-Type: text/markdown; charset=utf-8`, `Cache-Control` |
 | `/docs/intro.md`             | `""`             | `200` with an empty body (empty string is content, not absence)      |
 | `/missing.md`                | `null`           | `404`, `Content-Type: text/plain; charset=utf-8`, body `Not Found`   |
+| `/missing.md`                | non-string       | `404`, same as `null`                                                |
+| `/..%2Fsecret`, `/a%00b`     | not called       | `400`, `text/plain`, body `Bad Request`                              |
 | `/docs/getting%20started.md` | —                | resolver receives `["docs", "getting started"]`                      |
 | `/`                          | —                | resolver receives `[]`                                               |
+
+A request is rejected with `400` (the resolver is not called) when the path has
+malformed percent-encoding or a decoded segment that is empty, `.`, `..`, or
+contains `/`, `\` or a NUL byte. Every response carries
+`X-Content-Type-Options: nosniff`. An invalid `cacheControl` value throws a
+`TypeError` when the handler is created.
 
 Default `Cache-Control`:
 `public, max-age=3600, s-maxage=86400, stale-while-revalidate=604800` — override
