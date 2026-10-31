@@ -49,11 +49,10 @@ retained as history, not a promise of the current export surface. See
   a Web-standard `(request) => Promise<Response>` App Router route handler:
   strips a trailing `.md`, resolves the slug, returns `text/markdown` with cache
   headers, `404` when the resolver returns `null`.
-- `ship-v0-core.4` — `in-progress` — docs set (README, `docs/API.md`,
-  `llms.txt` + `llms-full.txt`, AGENTS/CLAUDE mirror, CHANGELOG, CONTRIBUTING,
-  SECURITY, COC).
-- `ship-v0-core.5` — `in-progress` — 100% coverage (index format, full text,
-  route 200/404/cache/content-type), lint/typecheck/build green.
+- `ship-v0-core.4` — `in-progress` — docs set (README, `docs/API.md`, one
+  `llms.txt` index, `AGENTS.md`, CHANGELOG, CONTRIBUTING, SECURITY, COC).
+- `ship-v0-core.5` — `in-progress` — 100% coverage (index format, route
+  200/404/cache/content-type), lint/typecheck/build green.
 - `ship-v0-core.6` — `in-progress` — GitHub repo `vllnt/next-llms`, standard
   hardening (squash-only, branch protection, topics), push, CI green, canary
   publish verified.
