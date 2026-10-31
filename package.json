@@ -21,9 +21,9 @@
   "main": "./dist/index.js",
   "scripts": {
     "build": "tsc --project ./tsconfig.build.json",
-    "typecheck": "tsc --noEmit",
-    "typecheck:ci": "tsc --noEmit --project tsconfig.ci.json",
-    "lint": "pnpm check:agents && eslint .",
+    "typecheck": "tsc --noEmit --incremental --tsBuildInfoFile node_modules/.cache/tsc/typecheck.tsbuildinfo",
+    "typecheck:ci": "tsc --noEmit --incremental --tsBuildInfoFile node_modules/.cache/tsc/typecheck-ci.tsbuildinfo --project tsconfig.ci.json",
+    "lint": "pnpm check:agents && eslint --cache --cache-location node_modules/.cache/eslint/ .",
     "format": "prettier --write .",
     "format:check": "prettier --check .",
     "test": "vitest run --passWithNoTests",
