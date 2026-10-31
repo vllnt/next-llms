@@ -52,15 +52,14 @@ in any Next.js runtime (and Remix, Hono, Deno, …).
 ## Installation
 
 ```bash
-pnpm add @vllnt/next-llms@canary
+pnpm add @vllnt/next-llms
 ```
 
-Node.js `>=18`; no peer dependencies. This README follows current main and the
-`canary` channel (`0.1.0-canary.3cfe2be` at this audit). npm `latest` also
-points to a prerelease, but an older one (`0.1.0-canary.bca5ab7`), so an
-untagged install does not select current main. There is no stable release on
-`latest` yet. Pin the resolved prerelease and test upgrades. Current main
-removed the older `generateLlmsFullText` API; use the two exports below.
+Node.js `>=18`; no peer dependencies (the package imports nothing from `next` or
+`react`). Every push to `main` can publish a prerelease to the `canary` channel
+(`pnpm add @vllnt/next-llms@canary`); stable releases are published from a
+`vX.Y.Z` tag. The older `generateLlmsFullText` API from early canary builds is
+not part of the stable API; use the two exports below.
 
 ## Usage
 
@@ -92,8 +91,13 @@ Full reference: [docs/API.md](docs/API.md). Also see the [LLM index](llms.txt),
 
 - No secrets touched — the package generates text and serves whatever your
   resolver returns.
-- Your resolver is the boundary — validate and authorize the slug before
-  returning content.
+- Your resolver is the boundary — authorize the slug before returning content.
+  The route rejects malformed percent-encoding and slug segments that are empty,
+  `.`, `..`, or contain `/`, `\` or NUL (`400`), but you still own how a slug
+  maps to a file or record.
+- `generateLlmsText` escapes link titles and URLs and collapses line breaks, and
+  rejects blank titles/URLs and `javascript:`, `data:` or `vbscript:` URLs with
+  a `TypeError`.
 - Successful responses default to **public caching** (one hour in browsers, one
   day in shared caches). For private or personalized content, explicitly pass
   `{ cacheControl: "private, no-store" }`; authorization alone does not disable

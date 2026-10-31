@@ -4,10 +4,11 @@
   "description": "AI discoverability for Next.js sites — generate an llms.txt manifest and serve any page as raw markdown",
   "license": "MIT",
   "type": "module",
-  "packageManager": "pnpm@9.15.4",
+  "packageManager": "pnpm@10.34.8",
   "files": [
     "dist",
-    "src"
+    "src",
+    "!src/**/*.test.ts"
   ],
   "exports": {
     "./package.json": "./package.json",
@@ -21,9 +22,9 @@
   "main": "./dist/index.js",
   "scripts": {
     "build": "tsc --project ./tsconfig.build.json",
-    "typecheck": "tsc --noEmit",
-    "typecheck:ci": "tsc --noEmit --project tsconfig.ci.json",
-    "lint": "pnpm check:agents && eslint .",
+    "typecheck": "tsc --noEmit --incremental --tsBuildInfoFile node_modules/.cache/tsc/typecheck.tsbuildinfo",
+    "typecheck:ci": "tsc --noEmit --incremental --tsBuildInfoFile node_modules/.cache/tsc/typecheck-ci.tsbuildinfo --project tsconfig.ci.json",
+    "lint": "pnpm check:agents && eslint --cache --cache-location node_modules/.cache/eslint/ .",
     "format": "prettier --write .",
     "format:check": "prettier --check .",
     "test": "vitest run --passWithNoTests",
@@ -79,6 +80,13 @@
     "discoverability"
   ],
   "pnpm": {
+    "minimumReleaseAge": 10080,
+    "minimumReleaseAgeExclude": [
+      "@vllnt/*"
+    ],
+    "ignoredBuiltDependencies": [
+      "esbuild"
+    ],
     "overrides": {
       "deepmerge-ts@<8.0.0": "8.0.2",
       "handlebars@<4.7.10": "4.7.10"
