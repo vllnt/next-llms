@@ -4,7 +4,7 @@
   "description": "AI discoverability for Next.js sites — generate an llms.txt manifest and serve any page as raw markdown",
   "license": "MIT",
   "type": "module",
-  "packageManager": "pnpm@9.15.4",
+  "packageManager": "pnpm@10.34.8",
   "files": [
     "dist",
     "src"
@@ -79,6 +79,13 @@
     "discoverability"
   ],
   "pnpm": {
+    "minimumReleaseAge": 10080,
+    "minimumReleaseAgeExclude": [
+      "@vllnt/*"
+    ],
+    "ignoredBuiltDependencies": [
+      "esbuild"
+    ],
     "overrides": {
       "deepmerge-ts@<8.0.0": "8.0.2",
       "handlebars@<4.7.10": "4.7.10"
