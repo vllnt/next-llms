@@ -8,8 +8,12 @@
   "files": [
     "dist",
     "src",
+    "docs/API.md",
+    "CHANGELOG.md",
+    "llms.txt",
     "!src/**/*.test.ts",
-    "!src/**/*.spec.*"],
+    "!src/**/*.spec.*"
+  ],
   "exports": {
     "./package.json": "./package.json",
     ".": {

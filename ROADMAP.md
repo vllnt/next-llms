@@ -28,7 +28,7 @@ publishing, no Convex.
   `email-guard.yml`, `.github/` templates.
 - `scaffold-repo.3` — `done` — `AGENTS.md` repository policy from the hub.
 
-## ship-v0-core — `in-progress`
+## ship-v0-core — `done`
 
 Historical scope: three public functions at 0.1.0 (canary), 100% coverage, zero
 runtime deps. **Current-state note:** merged
@@ -39,21 +39,21 @@ prerelease predates that removal. The original task descriptions below are
 retained as history, not a promise of the current export surface. See
 [installation and release channels](README.md#installation).
 
-- `ship-v0-core.1` — `in-progress` — `generateLlmsText(config)` → llms.txt index
+- `ship-v0-core.1` — `done` — `generateLlmsText(config)` → llms.txt index
   (H1, blockquote, free prose, `## Section` link lists, droppable `## Optional`)
   per the llmstxt.org spec.
 - `ship-v0-core.2` — `dropped` — removed by PR #1 after initial implementation;
   historical scope: `generateLlmsFullText(config)` → llms-full.txt (H1 +
   blockquote + each section's pages inlined with title + source link).
-- `ship-v0-core.3` — `in-progress` — `createMarkdownRoute(resolver, options)` →
+- `ship-v0-core.3` — `done` — `createMarkdownRoute(resolver, options)` →
   a Web-standard `(request) => Promise<Response>` App Router route handler:
   strips a trailing `.md`, resolves the slug, returns `text/markdown` with cache
   headers, `404` when the resolver returns `null`.
-- `ship-v0-core.4` — `in-progress` — docs set (README, `docs/API.md`, one
+- `ship-v0-core.4` — `done` — docs set (README, `docs/API.md`, one
   `llms.txt` index, `AGENTS.md`, CHANGELOG, CONTRIBUTING, SECURITY, COC).
-- `ship-v0-core.5` — `in-progress` — 100% coverage (index format, route
+- `ship-v0-core.5` — `done` — 100% coverage (index format, route
   200/404/cache/content-type), lint/typecheck/build green.
-- `ship-v0-core.6` — `in-progress` — GitHub repo `vllnt/next-llms`, standard
+- `ship-v0-core.6` — `done` — GitHub repo `vllnt/next-llms`, standard
   hardening (squash-only, branch protection, topics), push, CI green, canary
   publish verified.
 
@@ -90,13 +90,12 @@ guidance.
   section from this repo's real decisions (peer deps only when imported, node
   test env, reference repo = `next-llms`, exports map).
 
-## first-stable-release — `blocked`
+## first-stable-release — `in-progress`
 
-Promote 0.1.0 (canary) to the first stable release.
+First stable release is `0.1.0`, published from a `v0.1.0` tag on `main`. A
+later 1.0.0 still waits on `route-ergonomics` and `auto-discovery`.
 
-- `first-stable-release.1` — `blocked` — needs the public API settled
-  (`route-ergonomics` + `auto-discovery` shape the surface before a 1.0.0
-  commitment).
-- `first-stable-release.2` — `blocked` — gated by the hub canary-only version
-  hold (no version bump past 0.1.0 until the owner cuts the first stable
-  release).
+- `first-stable-release.1` — `planned` — a 1.0.0 commitment still needs the
+  public API settled (`route-ergonomics` + `auto-discovery`).
+- `first-stable-release.2` — `in-progress` — first stable `0.1.0` is being cut
+  from a `v0.1.0` tag (the former canary-only hold is lifted).
