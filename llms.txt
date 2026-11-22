@@ -7,7 +7,7 @@
 Next.js (App Router) and any Web-standard runtime. It exposes two functions.
 `generateLlmsText(config)` returns an `llms.txt` index string in the llmstxt.org
 shape — an `#` title, a `>` blockquote, optional free prose, `## Section` link
-lists (`- [title](url): notes`), and a droppable `## Optional` section.
+lists (`- [title](https://github.com/vllnt/next-llms/blob/main/url): notes`), and a droppable `## Optional` section.
 `createMarkdownRoute(resolver, options?)` returns a Web-standard
 `(request) => Promise<Response>` route handler: it URL-decodes the pathname,
 strips a trailing `.md`, calls the resolver with the slug, and returns `200`
@@ -23,14 +23,14 @@ set `cacheControl: "private, no-store"` for private/personalized content.
 
 ## Docs
 
-- [README](README.md): Overview, installation, usage examples
-- [API Reference](docs/API.md): Function signatures, config types, response behavior
-- [Changelog](CHANGELOG.md): Version history and release notes
-- [Contributing](CONTRIBUTING.md): Development setup, validation commands, release workflow
+- [README](https://github.com/vllnt/next-llms/blob/main/README.md): Overview, installation, usage examples
+- [API Reference](https://github.com/vllnt/next-llms/blob/main/docs/API.md): Function signatures, config types, response behavior
+- [Changelog](https://github.com/vllnt/next-llms/blob/main/CHANGELOG.md): Version history and release notes
+- [Contributing](https://github.com/vllnt/next-llms/blob/main/CONTRIBUTING.md): Development setup, validation commands, release workflow
 
 ## Optional
 
-- [AGENTS](AGENTS.md): Canonical agent instructions for this repository
-- [Security Policy](SECURITY.md): Vulnerability reporting policy
-- [Code of Conduct](CODE_OF_CONDUCT.md): Community participation guidelines
-- [License](LICENSE): MIT license
+- [AGENTS](https://github.com/vllnt/next-llms/blob/main/AGENTS.md): Canonical agent instructions for this repository
+- [Security Policy](https://github.com/vllnt/next-llms/blob/main/SECURITY.md): Vulnerability reporting policy
+- [Code of Conduct](https://github.com/vllnt/next-llms/blob/main/CODE_OF_CONDUCT.md): Community participation guidelines
+- [License](https://github.com/vllnt/next-llms/blob/main/LICENSE): MIT license
