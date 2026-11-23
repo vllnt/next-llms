@@ -40,13 +40,13 @@
   "devDependencies": {
     "@types/node": "^24.19.2",
     "@typescript/native": "npm:typescript@7.0.2",
-    "@vitest/coverage-v8": "^5.0.5",
-    "@vllnt/eslint-config": "2.0.0",
+    "@vitest/coverage-v8": "^5.1.0",
+    "@vllnt/eslint-config": "2.1.0",
     "@vllnt/typescript": "2.0.0",
     "eslint": "^9.0.0",
-    "prettier": "^3.9.10",
+    "prettier": "^3.10.1",
     "typescript": "npm:@typescript/typescript6@^6.0.2",
-    "vitest": "^5.0.5"
+    "vitest": "^5.1.0"
   },
   "homepage": "https://github.com/vllnt/next-llms#readme",
   "bugs": {
@@ -92,6 +92,7 @@
       "esbuild"
     ],
     "overrides": {
+      "minimatch@>=7.0.0 <11.0.1": "11.0.5",
       "deepmerge-ts@<8.0.0": "8.0.2",
       "handlebars@<4.7.10": "4.7.10"
     }
