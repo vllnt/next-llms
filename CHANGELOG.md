@@ -9,7 +9,7 @@ adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 ## [0.1.1] - 2026-11-27
 
 Documentation and tooling release. The published code, exports and types are
-unchanged from 0.1.0.
+unchanged from 0.1.0; only TSDoc comments in `dist/` and `src/` differ.
 
 ### Changed
 
@@ -22,6 +22,22 @@ unchanged from 0.1.0.
   `https://oss.vllnt.com/packages/next-llms`.
 - Every push to `main` that changes the package or its shipped docs publishes a
   canary; the canary job no longer depends on a repository variable.
+- The README is rewritten for coding agents: a one-sentence summary, then "For
+  coding agents", "When to use", "Install", "Quick start", "API", "Common
+  tasks", "Errors and fixes", "Limits and gotchas" and "Compatibility". The
+  examples are self-contained, and "Errors and fixes" lists every error the
+  package throws or returns. A test checks the section order, the code blocks,
+  the links, that every export and error is documented, and runs the README
+  examples against the built package.
+- `package.json` `description` and `keywords` name what the package does and its
+  stack. `llms.txt` carries the same summary and use cases and links the API
+  reference and the errors table.
+- `docs/API.md` gives each exported type its own heading and replaces the
+  undefined `getDoc` placeholder with a self-contained example; so does the
+  `createMarkdownRoute` TSDoc example.
+- The README ends with links to the vllnt open source index, the package page,
+  vllnt.com and the author; `llms.txt` ends with a matching "Ecosystem" list;
+  the entry module's TSDoc links the package page.
 - Development tooling moves to eslint 10, pnpm 12 and `@vllnt/typescript` 3, and
   CI now checks formatting (`pnpm format:check`).
 

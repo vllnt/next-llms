@@ -37,7 +37,7 @@ runtime deps. **Current-state note:** merged
 exports `generateLlmsText` and `createMarkdownRoute`; only early
 `0.1.0-canary.*` builds include the removed export. The original task
 descriptions below are retained as history, not a promise of the current export
-surface. See [installation and release channels](README.md#installation).
+surface. See [release channels](README.md#compatibility).
 
 - `ship-v0-core.1` — `done` — `generateLlmsText(config)` → llms.txt index (H1,
   blockquote, free prose, `## Section` link lists, droppable `## Optional`) per

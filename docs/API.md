@@ -3,7 +3,8 @@
 **Compatibility:** any Web-standard runtime — Next.js App Router (Edge or Node),
 Remix, Hono, Deno. Node `>=18`. Zero runtime dependencies.
 
-See [release channels](../README.md#installation). `generateLlmsFullText` from
+See [release channels](../README.md#compatibility) and
+[errors and fixes](../README.md#errors-and-fixes). `generateLlmsFullText` from
 early canary builds is not part of the stable API.
 
 All exports are available from the package root:
@@ -49,8 +50,17 @@ emitted unchanged.
 | `sections` | `LlmsSection[]?` | Named `## Section` link lists.                   |
 | `optional` | `LlmsLink[]?`    | Links under the droppable `## Optional` section. |
 
-`LlmsSection` = `{ title: string; links: LlmsLink[] }`. `LlmsLink` =
-`{ title: string; url: string; notes?: string }`.
+### `LlmsSection`
+
+`{ title: string; links: LlmsLink[] }` — one `## {title}` block and its links.
+`title` is required; a section with an empty `links` array renders only its
+heading.
+
+### `LlmsLink`
+
+`{ title: string; url: string; notes?: string }` — one `- [title](url): notes`
+line. `title` and `url` are required; `: notes` is left out when `notes` is
+empty.
 
 ### Example
 
@@ -83,11 +93,16 @@ function createMarkdownRoute(
 ): (request: Request) => Promise<Response>;
 ```
 
-`MarkdownResolver` =
-`(slug: string[]) => string | null | Promise<string | null>`. The slug is the
-path segments, URL-decoded, with any trailing `.md` removed.
+### `MarkdownResolver`
 
-`MarkdownRouteOptions` = `{ cacheControl?: string }`.
+`(slug: string[]) => string | null | Promise<string | null>`. The slug is the
+full request path's segments, URL-decoded, with a trailing `.md` removed from
+the last one. It includes any route prefix (`/md/docs/intro.md` gives
+`["md", "docs", "intro"]`). Return a string for content or `null` for not found.
+
+### `MarkdownRouteOptions`
+
+`{ cacheControl?: string }` — the `Cache-Control` value for `200` responses.
 
 ### Behavior
 
@@ -119,8 +134,10 @@ resolver. The public default is not suitable for authenticated content.
 // app/[...slug]/route.ts
 import { createMarkdownRoute } from "@vllnt/next-llms";
 
+const pages: Record<string, string> = { "docs/intro": "# Intro\n\nHello." };
+
 export const GET = createMarkdownRoute(
-  async (slug) => (await getDoc(slug.join("/")))?.markdown ?? null,
+  (slug) => pages[slug.join("/")] ?? null,
   { cacheControl: "public, max-age=60" },
 );
 ```

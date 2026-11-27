@@ -1,7 +1,7 @@
 {
   "name": "@vllnt/next-llms",
   "version": "0.1.1",
-  "description": "AI discoverability for Next.js sites — generate an llms.txt manifest and serve any page as raw markdown",
+  "description": "Generate an llms.txt file and serve pages as Markdown from Next.js App Router route handlers, using Web-standard Request and Response and no dependencies.",
   "license": "MIT",
   "type": "module",
   "packageManager": "pnpm@12.22.0",
@@ -72,15 +72,15 @@
   },
   "sideEffects": false,
   "keywords": [
-    "nextjs",
-    "next",
-    "llms-txt",
     "llms.txt",
-    "ai",
-    "llm",
-    "seo",
+    "llms-txt",
+    "nextjs",
     "app-router",
+    "route-handler",
     "markdown",
-    "discoverability"
+    "llm",
+    "ai-agents",
+    "typescript",
+    "edge-runtime"
   ]
 }

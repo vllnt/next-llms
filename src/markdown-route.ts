@@ -60,8 +60,10 @@ function pathnameToSlug(pathname: string): string[] | null {
  * // app/[...slug]/route.ts
  * import { createMarkdownRoute } from "@vllnt/next-llms";
  *
- * export const GET = createMarkdownRoute(async (slug) =>
- *   getDoc(slug.join("/")),
+ * const pages: Record<string, string> = { "docs/intro": "# Intro\n\nHello." };
+ *
+ * export const GET = createMarkdownRoute(
+ *   (slug) => pages[slug.join("/")] ?? null,
  * );
  * ```
  */

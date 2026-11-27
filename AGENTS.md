@@ -70,6 +70,13 @@ over Web-standard `Request` / `Response` / `URL`.
 - Runtime deps: none (the fleet dependency policy — official `@convex-dev/*` +
   `@vllnt/*` only — bites only if a dep is ever added; this package has none).
 - Tests: `vitest` (node env), 100% coverage gate.
+- README layout is shared by every `@vllnt` package and enforced by
+  `src/documentation.test.ts`: section names and order, install and first
+  example in the first 40 lines, tagged code blocks, resolving links, every
+  export and error documented, the vllnt footer and the `llms.txt` Ecosystem
+  block. The README examples are type-checked and run against a fresh build.
+- `.prettierrc.json` sets `proseWrap: preserve` for `README.md` only, so the
+  one-line vllnt footer stays exactly as written.
 
 ## Repository policy
 
