@@ -13,9 +13,9 @@ lists (`- [title](url): notes`), and a droppable `## Optional` section.
 strips a trailing `.md`, calls the resolver with the slug, and returns `200`
 `text/markdown` with a `Cache-Control` header when the resolver returns a string
 (an empty string is content), or `404` `text/plain` when it returns `null` or
-any other non-string. A path with malformed percent-encoding or a segment that
-is empty, `.`, `..`, or contains `/`, `\` or NUL gets `400` without calling the
-resolver. The handler imports nothing from `next`; `null` is the explicit
+any other non-string. A path with malformed percent-encoding or a decoded
+segment that is empty (such as `/.md`), `.`, `..`, or contains `/`, `\` or NUL
+gets `400` without calling the resolver. The handler imports nothing from `next`; `null` is the explicit
 not-found sentinel.
 
 The stable API is the two functions above; the older `generateLlmsFullText`

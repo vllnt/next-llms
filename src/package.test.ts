@@ -7,9 +7,9 @@ import { describe, expect, it } from "vitest";
 import * as api from "./index.js";
 
 /**
- * Files every published tarball must contain. `dist/` is built only in the
- * publish job, so it is allowed here but not required. This runs on every PR;
- * `scripts/check-package-contents.sh` repeats the allowlist check at publish.
+ * Files every published tarball must contain. `dist/` is not built before
+ * tests run in CI, so it is allowed here but not required.
+ * `scripts/check-package-contents.sh` runs a broader allowlist check at publish.
  */
 const REQUIRED = [
   "package.json",
@@ -23,11 +23,11 @@ const REQUIRED = [
 
 /** A list-item link without a URL scheme, with any leading `./` dropped. */
 const RELATIVE_LINK =
-  /^- \[[^\]]*\]\((?![a-z][\d+.a-z-]*:)(?:\.\/)?([^\s#)]+)/gim;
+  /^\s*[*+-] \[[^\]]*\]\((?![a-z][\d+.a-z-]*:)(?:\.\/)?([^\s#)]+)/gim;
 
 /** A link into this repository on GitHub, capturing the file path. */
 const REPO_LINK =
-  /https:\/\/(?:github\.com\/vllnt\/next-llms\/(?:blob|raw|tree)|raw\.githubusercontent\.com\/vllnt\/next-llms)\/[^/]+\/([^\s#)]+)/g;
+  /https:\/\/(?:(?:www\.)?github\.com\/vllnt\/next-llms\/(?:blob|raw|tree)|raw\.githubusercontent\.com\/vllnt\/next-llms)\/[^/]+\/([^\s#)?]+)/g;
 
 /** Shipped build output and source: flat `dist/` files and non-test `src/*.ts`. */
 const BUILD_OR_SOURCE = /^(?:dist\/[^/]+\.(?:d\.ts|js|map)|src\/[^/]+\.ts)$/;
