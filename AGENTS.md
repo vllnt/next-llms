@@ -42,9 +42,10 @@ over Web-standard `Request` / `Response` / `URL`.
 ## Key design decisions
 
 - **Zero runtime dependencies, runtime-agnostic.** The route handler returns a
-  Web-standard `Response` and imports nothing from `next`, so it runs on the
-  Edge, Node, Remix, Hono, or Deno. `next` is not even a peer dependency — the
-  package is positioned for Next.js but coupled to nothing.
+  Web-standard `Response` and imports nothing from `next`, so it can run on any
+  runtime with Web-standard `Request`/`Response` (only Node.js and the Next.js
+  Node.js and Edge runtimes are checked). `next` is not even a peer dependency —
+  the package is positioned for Next.js but coupled to nothing.
 - **`null` is the not-found sentinel.** `MarkdownResolver` returns `string` for
   content (an empty string is still content → `200`) or `null` for "no page" →
   `404`. This is an explicit, type-level distinction, so `unicorn/no-null` is
@@ -70,6 +71,14 @@ over Web-standard `Request` / `Response` / `URL`.
 - Runtime deps: none (the fleet dependency policy — official `@convex-dev/*` +
   `@vllnt/*` only — bites only if a dep is ever added; this package has none).
 - Tests: `vitest` (node env), 100% coverage gate.
+- README layout is shared by every `@vllnt` package and enforced by
+  `src/documentation.test.ts`: section names and order, install and first
+  example in the first 40 lines, tagged code blocks, resolving links, every
+  export and error documented, the exact `## Links` section before `## License`,
+  the vllnt footer and the `llms.txt` Ecosystem block. The README examples are
+  type-checked and run against a fresh build.
+- `.prettierrc.json` sets `proseWrap: preserve` for `README.md` only, so the
+  one-line `## Links` bullets and vllnt footer stay exactly as written.
 
 ## Repository policy
 

@@ -1,49 +1,50 @@
 # @vllnt/next-llms
 
-> AI discoverability for Next.js sites — generate llms.txt manifests and serve
-> any page as raw markdown.
+> Generate an llms.txt file and serve pages as Markdown from Next.js App Router
+> route handlers, using Web-standard Request and Response and no dependencies.
 
-`@vllnt/next-llms` is a publishable, zero-dependency TypeScript package for
-Next.js (App Router) and any Web-standard runtime. It exposes two functions.
+`@vllnt/next-llms` is a TypeScript ESM package with two functions.
 `generateLlmsText(config)` returns an `llms.txt` index string in the llmstxt.org
 shape — an `#` title, a `>` blockquote, optional free prose, `## Section` link
 lists (`- [title](url): notes`), and a droppable `## Optional` section.
 `createMarkdownRoute(resolver, options?)` returns a Web-standard
-`(request) => Promise<Response>` route handler: it URL-decodes the pathname,
-strips a trailing `.md`, calls the resolver with the slug, and returns `200`
-`text/markdown` with a `Cache-Control` header when the resolver returns a string
-(an empty string is content), or `404` `text/plain` when it returns `null` or
-any other non-string. A path with malformed percent-encoding or a decoded
-segment that is empty (such as `/.md`), `.`, `..`, or contains `/`, `\` or NUL
-gets `400` without calling the resolver. The handler imports nothing from `next`; `null` is the explicit
-not-found sentinel.
+`(request) => Promise<Response>` route handler: it drops empty path segments,
+strips a trailing lowercase `.md` from the last segment, then URL-decodes each
+segment, calls the resolver with the slug, and returns `200` `text/markdown`
+with a `Cache-Control` header when the resolver returns a string (an empty
+string is content), or `404` `text/plain` when it returns `null` or any other
+non-string. A path with malformed percent-encoding, a segment that is empty,
+`.` or `..` after stripping `.md` and decoding (such as `/.md` or `/...md`), or
+a decoded segment that contains `/`, `\` or NUL gets `400` without calling the
+resolver (URL parsing already resolves plain `.` and `..` segments, so
+`/docs/../x` gives `["x"]`); in Next.js, malformed percent-encoding gets Next's
+own `500` before the handler runs. In Next.js, `HEAD` is answered from `GET`,
+`OPTIONS` gets `204` and other methods get `405`. The handler imports nothing
+from `next`. Node.js >=18 (CI tests only Node.js 24); no peer or runtime
+dependencies.
+Successful responses use public caching by default; pass
+`cacheControl: "private, no-store"` for private content and check the request in
+your own `GET`, because the resolver only receives the slug.
 
-The stable API is the two functions above; the older `generateLlmsFullText`
-API from early canary builds is not included. Install `@vllnt/next-llms`;
-prereleases are on the `canary` tag. Node.js >=18; no peer dependencies.
-Successful responses use public caching by default. Authorize in the resolver and
-set `cacheControl: "private, no-store"` for private/personalized content.
+When to use:
 
-This file describes the package itself. It is not output of `generateLlmsText`;
-the `llms.txt` your site serves is the one you build with `generateLlmsText`.
+- Use it when your Next.js site should serve an `/llms.txt` link index.
+- Use it when you have Markdown for your pages and want it at `.md` URLs.
+- Do not use it to build the link list from your routes; build it in your code.
+- Do not use it to convert HTML to Markdown; use a converter such as `turndown`.
+- Do not use it for `llms-full.txt`; concatenate your pages in your own route.
 
-## For coding agents
-
-The docs ship inside the package at `node_modules/@vllnt/next-llms/docs/`,
-next to `README.md`, `CHANGELOG.md`, this `llms.txt` and the TypeScript source
-in `src/`. They match the installed version. Read them before writing code that
-uses this package.
+For coding agents: the docs ship in `node_modules/@vllnt/next-llms/` next to
+the TypeScript source in `src/` and match the installed version. This file
+describes the package itself; it is not output of `generateLlmsText`.
 
 ## Docs
 
-- [README](./README.md): Overview, installation, usage examples
-- [API Reference](./docs/API.md): Function signatures, config types, response behavior
+- [README](./README.md): Install, quick start, common tasks, limits and gotchas, compatibility
+- [API Reference](./docs/API.md): Every export, its types and the route's response behavior
+- [Errors and fixes](./README.md#errors-and-fixes): Every error the package raises and every error response, its cause and the fix
 - [Changelog](./CHANGELOG.md): Version history and release notes
 - [Contributing](https://github.com/vllnt/next-llms/blob/main/CONTRIBUTING.md): Development setup, validation commands, release workflow
-
-## Ecosystem
-
-- [vllnt oss](https://oss.vllnt.com/llms.txt): Index of every `@vllnt` package
 
 ## Optional
 
@@ -51,3 +52,12 @@ uses this package.
 - [Security Policy](https://github.com/vllnt/next-llms/blob/main/SECURITY.md): Vulnerability reporting policy
 - [Code of Conduct](https://github.com/vllnt/next-llms/blob/main/CODE_OF_CONDUCT.md): Community participation guidelines
 - [License](./LICENSE): MIT license
+
+## Ecosystem
+
+- [Package page](https://oss.vllnt.com/packages/next-llms)
+- [Release feed](https://oss.vllnt.com/packages/next-llms/rss.xml)
+- [All @vllnt packages](https://oss.vllnt.com/llms.txt)
+- [Search vllnt packages and docs](https://index.vllnt.com)
+- [vllnt](https://vllnt.com/llms.txt)
+- [Author](https://bntvllnt.com)
