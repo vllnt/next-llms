@@ -9,6 +9,7 @@ pnpm install
 pnpm build
 pnpm typecheck
 pnpm lint
+pnpm format:check
 pnpm test:coverage
 ```
 
@@ -27,7 +28,8 @@ test **and** at least one adversarial test (empty input, not-found, boundary).
 
 ## Code Style
 
-- Prettier + ESLint (run `pnpm lint` before submitting)
+- Prettier + ESLint (run `pnpm lint` and `pnpm format:check` before submitting;
+  `pnpm format` fixes formatting)
 - `@vllnt/eslint-config/nodejs` flat config
 - No `any` — use `unknown` + type guards
 - Explicit return types on public APIs
@@ -38,7 +40,7 @@ test **and** at least one adversarial test (empty input, not-found, boundary).
 - One logical change per PR
 - Include tests for new behavior or bug fixes
 - Ensure all checks pass:
-  `pnpm typecheck && pnpm lint && pnpm test:coverage && pnpm build`
+  `pnpm typecheck && pnpm lint && pnpm format:check && pnpm test:coverage && pnpm build`
 
 ## Releases
 

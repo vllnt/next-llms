@@ -2,7 +2,8 @@
 
 AI discoverability for Next.js sites: generate an `llms.txt` manifest and serve
 any page as raw markdown. First Type D (`@vllnt/next-*`) package in the vllnt
-OSS fleet. It follows the `oss-packages` hub `AGENTS.md` universal package contract.
+OSS fleet. It follows the `oss-packages` hub `AGENTS.md` universal package
+contract.
 
 ## Agent instructions
 
@@ -74,18 +75,19 @@ over Web-standard `Request` / `Response` / `URL`.
 
 - Match surrounding code and make the smallest coherent change.
 - Keep public APIs typed, validate trust boundaries, and never commit secrets.
-- Use a feature branch, signed no-reply commits, and the repository's required checks.
+- Use a feature branch, signed no-reply commits, and the repository's required
+  checks.
 - Update affected documentation in the same commit and grep stale values.
 
 ## Docs sync
 
-| Changed                                                                | Update in the same commit                                            |
-| ---------------------------------------------------------------------- | -------------------------------------------------------------------- |
-| Public API (`generateLlmsText` / `createMarkdownRoute`, args, returns) | README API table, `docs/API.md`, `llms.txt`                          |
-| Config types / options (`LlmsConfig`, `MarkdownRouteOptions`)          | README, `docs/API.md`                                                |
-| Response behavior (status, headers, cache defaults)                    | `docs/API.md` behavior table, README                                 |
+| Changed                                                                | Update in the same commit                     |
+| ---------------------------------------------------------------------- | --------------------------------------------- |
+| Public API (`generateLlmsText` / `createMarkdownRoute`, args, returns) | README API table, `docs/API.md`, `llms.txt`   |
+| Config types / options (`LlmsConfig`, `MarkdownRouteOptions`)          | README, `docs/API.md`                         |
+| Response behavior (status, headers, cache defaults)                    | `docs/API.md` behavior table, README          |
 | Naming (package, repo, exports)                                        | README, `package.json`, `llms.txt`, this file |
-| Version                                                                | `CHANGELOG.md` entry, version badge                                  |
+| Version                                                                | `CHANGELOG.md` entry, version badge           |
 
 Grep old values before committing (e.g. `git grep "<old-name>"` → must be
 empty).

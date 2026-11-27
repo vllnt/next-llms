@@ -1,6 +1,6 @@
 {
   "name": "@vllnt/next-llms",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "AI discoverability for Next.js sites — generate an llms.txt manifest and serve any page as raw markdown",
   "license": "MIT",
   "type": "module",

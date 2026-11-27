@@ -6,6 +6,11 @@ adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
 
+## [0.1.1] - 2026-11-27
+
+Documentation and tooling release. The published code, exports and types are
+unchanged from 0.1.0.
+
 ### Changed
 
 - `llms.txt` links the files shipped in the package (`README.md`, `docs/API.md`,
@@ -17,6 +22,8 @@ adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
   `https://oss.vllnt.com/packages/next-llms`.
 - Every push to `main` that changes the package or its shipped docs publishes a
   canary; the canary job no longer depends on a repository variable.
+- Development tooling moves to eslint 10, pnpm 12 and `@vllnt/typescript` 3, and
+  CI now checks formatting (`pnpm format:check`).
 
 ### Fixed
 
