@@ -18,6 +18,7 @@ on:
       - "CHANGELOG.md"
       - "llms.txt"
       - "docs/API.md"
+      - "LICENSE"
       - ".github/workflows/publish.yml"
   workflow_dispatch:
 
