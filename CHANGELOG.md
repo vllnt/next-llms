@@ -15,6 +15,8 @@ adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
   packages" sections.
 - `package.json` `homepage` points to
   `https://oss.vllnt.com/packages/next-llms`.
+- Every push to `main` that changes the package or its shipped docs publishes a
+  canary; the canary job no longer depends on a repository variable.
 
 ### Fixed
 

@@ -56,10 +56,10 @@ pnpm add @vllnt/next-llms
 ```
 
 Node.js `>=18`; no peer dependencies (the package imports nothing from `next` or
-`react`). Every push to `main` can publish a prerelease to the `canary` channel
-(`pnpm add @vllnt/next-llms@canary`); stable releases are published from a
-`vX.Y.Z` tag. The older `generateLlmsFullText` API from early canary builds is
-not part of the stable API; use the two exports below.
+`react`). Every push to `main` that changes the package publishes a prerelease
+to the `canary` channel (`pnpm add @vllnt/next-llms@canary`); stable releases
+are published from a `vX.Y.Z` tag. The older `generateLlmsFullText` API from
+early canary builds is not part of the stable API; use the two exports below.
 
 ## Usage
 
