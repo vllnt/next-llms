@@ -19,10 +19,10 @@ matching source maps, differ.
   version, adds a "For coding agents" note, and ends with an "Ecosystem" list:
   the package page, the release feed, the vllnt oss index, package search, vllnt
   and the author. The README gains matching "For coding agents" and "Related
-  packages" sections and ends with a "Links" section, in place of "Author", with
-  the package page, release feed, oss index, package search, source, community,
-  vllnt.com, author and sponsor links. The entry module's TSDoc links the
-  package page.
+  packages" sections and adds a "Links" section before "License", in place of
+  "Author", with the package page, release feed, oss index, package search,
+  source, community, vllnt.com, author and sponsor links. The entry module's
+  TSDoc links the package page.
 - `package.json` `homepage` points to
   `https://oss.vllnt.com/packages/next-llms`.
 - Every push to `main` that changes the package or its shipped docs publishes a
@@ -47,8 +47,11 @@ matching source maps, differ.
   left empty by stripping `.md` gets `400`, that `.md` is stripped before the
   segments are URL-decoded, that `cacheControl: ""` sends an empty
   `Cache-Control` header, and that CI runs the tests on Node.js 24 only.
-- Development tooling moves to eslint 10, pnpm 12 and `@vllnt/typescript` 3, and
-  CI now checks formatting (`pnpm format:check`).
+- Development tooling moves to eslint 10, pnpm 12 and `@vllnt/typescript` 3
+  (also `@vllnt/eslint-config` 2.1.0, `prettier` ^3.10.1, `vitest` and
+  `@vitest/coverage-v8` ^5.1.1); the pnpm settings move from `package.json` to
+  `pnpm-workspace.yaml`, which adds a `minimatch` override. CI now checks
+  formatting (`pnpm format:check`).
 
 ### Fixed
 

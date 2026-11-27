@@ -13,13 +13,15 @@ strips a trailing lowercase `.md` from the last segment, then URL-decodes each
 segment, calls the resolver with the slug, and returns `200` `text/markdown`
 with a `Cache-Control` header when the resolver returns a string (an empty
 string is content), or `404` `text/plain` when it returns `null` or any other
-non-string. A path with malformed percent-encoding, a segment left empty by
-stripping `.md` (such as `/.md`), or a decoded segment that is `.`, `..`, or
-contains `/`, `\` or NUL gets `400` without calling the resolver; in Next.js,
-malformed percent-encoding gets Next's own `500` before the handler runs. In
-Next.js, `HEAD` is answered from `GET`, `OPTIONS` gets `204` and other methods
-get `405`. The handler imports nothing from `next`. Node.js >=18 (CI tests only
-Node.js 24); no peer or runtime dependencies.
+non-string. A path with malformed percent-encoding, a segment that is empty,
+`.` or `..` after stripping `.md` and decoding (such as `/.md` or `/...md`), or
+a decoded segment that contains `/`, `\` or NUL gets `400` without calling the
+resolver (URL parsing already resolves plain `.` and `..` segments, so
+`/docs/../x` gives `["x"]`); in Next.js, malformed percent-encoding gets Next's
+own `500` before the handler runs. In Next.js, `HEAD` is answered from `GET`,
+`OPTIONS` gets `204` and other methods get `405`. The handler imports nothing
+from `next`. Node.js >=18 (CI tests only Node.js 24); no peer or runtime
+dependencies.
 Successful responses use public caching by default; pass
 `cacheControl: "private, no-store"` for private content and check the request in
 your own `GET`, because the resolver only receives the slug.

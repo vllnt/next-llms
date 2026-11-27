@@ -17,7 +17,9 @@ const PLAIN_TEXT_HEADERS = {
  * percent-encoding, a segment left empty by stripping `.md` (`/docs/.md`), or a
  * decoded segment that is `.`, `..`, or contains `/`, `\` or a NUL byte (so a
  * resolver that maps slugs to files is never handed a traversal sequence such
- * as `..%2F..%2Fsecret`).
+ * as `..%2F..%2Fsecret`). `new URL` already resolves `.` and `..` segments,
+ * including `%2E` forms, so a dot segment reaches this check only when
+ * stripping `.md` leaves one (`/docs/...md`, `/docs/%2E%2E.md`).
  */
 function pathnameToSlug(pathname: string): string[] | null {
   const segments = pathname.split("/").filter((segment) => segment.length > 0);
@@ -41,8 +43,8 @@ function pathnameToSlug(pathname: string): string[] | null {
  * is a pure Web-standard `(request) => Promise<Response>` — it imports nothing
  * from `next` and uses only Web-standard APIs.
  *
- * - Strips a trailing `.md` from the path (`/docs/intro.md` resolves the slug
- *   `["docs", "intro"]`).
+ * - Strips a trailing lowercase `.md` from the path (`/docs/intro.md`
+ *   resolves the slug `["docs", "intro"]`).
  * - Returns `200` with `Content-Type: text/markdown; charset=utf-8` and a
  *   `Cache-Control` header when the resolver returns a string.
  * - Returns `404` (plain text) when the resolver returns `null` (or any
@@ -50,7 +52,10 @@ function pathnameToSlug(pathname: string): string[] | null {
  * - Returns `400` (plain text) without calling the resolver when the path has
  *   malformed percent-encoding, a segment left empty by stripping `.md`
  *   (`/docs/.md`), or a decoded segment that is `.`, `..`, or contains `/`, `\`
- *   or a NUL byte. Empty segments from `//` are dropped, not rejected.
+ *   or a NUL byte. URL parsing resolves `.` and `..` segments first
+ *   (`/docs/../x` gives `["x"]`), so a dot segment is rejected only when
+ *   stripping `.md` leaves one (`/docs/...md`, `/docs/%2E%2E.md`). Empty
+ *   segments from `//` are dropped, not rejected.
  * - Sets `X-Content-Type-Options: nosniff` on every response.
  *
  * @param resolver - Maps a slug to its markdown, or `null` when not found.

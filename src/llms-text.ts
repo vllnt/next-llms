@@ -57,7 +57,9 @@ function renderSection(section: LlmsSection): string {
  * prose, `## {section}` link lists, and a droppable `## Optional` section.
  *
  * @param config - The manifest content.
- * @returns The `llms.txt` file contents (no trailing newline).
+ * @returns The `llms.txt` file contents. No trailing newline is added; a
+ * `details` value that ends with one keeps it when no section (from `sections`
+ * or `optional`) follows it.
  * @throws {TypeError} When a title or link URL is blank, or a URL uses a
  * `javascript:`, `data:` or `vbscript:` scheme. Line breaks inside titles,
  * summaries and notes are collapsed to spaces, `[`, `]` and `\` in link titles

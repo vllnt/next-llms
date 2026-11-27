@@ -22,7 +22,8 @@ Render an `llms.txt` index manifest from a config object, following the
 function generateLlmsText(config: LlmsConfig): string;
 ```
 
-Output layout (blocks joined by a blank line, no trailing newline):
+Output layout (blocks joined by a blank line; no trailing newline is added, but
+a `details` that ends with one keeps it when no section follows it):
 
 1. `# {title}` — required H1.
 2. `> {summary}` — blockquote, when `summary` is set.
@@ -122,9 +123,12 @@ to the default.
 
 A request is rejected with `400` (the resolver is not called) when the path has
 malformed percent-encoding, a segment left empty by stripping `.md` (`/.md`,
-`/docs/.md`), or a decoded segment that is `.`, `..`, or contains `/`, `\` or a
-NUL byte. Empty segments from `//` are dropped, not rejected (`/docs//intro.md`
-gives `["docs", "intro"]`). In Next.js, malformed percent-encoding (such as
+`/docs/.md`), a segment that is `.` or `..` after stripping `.md` and decoding
+(`/docs/...md`), or a decoded segment that contains `/`, `\` or a NUL byte. URL
+parsing resolves plain `.` and `..` segments, including `%2E` forms, before the
+handler runs (`/docs/../x` gives `["x"]`), so the resolver never receives them.
+Empty segments from `//` are dropped, not rejected (`/docs//intro.md` gives
+`["docs", "intro"]`). In Next.js, malformed percent-encoding (such as
 `/docs/%E0.md`) gets Next's own `500` before the handler runs, so only the
 segment checks are seen there. Every response carries
 `X-Content-Type-Options: nosniff`. An invalid `cacheControl` value throws a
