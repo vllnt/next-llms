@@ -26,15 +26,18 @@ unchanged from 0.1.0; only TSDoc comments in `dist/` and `src/` differ.
   coding agents", "When to use", "Install", "Quick start", "API", "Common
   tasks", "Errors and fixes", "Limits and gotchas" and "Compatibility". The
   examples are self-contained, and "Errors and fixes" lists every error the
-  package throws or returns. A test checks the section order, the code blocks,
-  the links, that every export and error is documented, and runs the README
-  examples against the built package.
+  package raises itself or returns, plus the Next.js `500` for malformed
+  percent-encoding. A test checks the section order, the code blocks, the links,
+  that every export and error is documented, and runs the README examples
+  against the built package.
 - `package.json` `description` and `keywords` name what the package does and its
   stack. `llms.txt` carries the same summary and use cases and links the API
   reference and the errors table.
 - `docs/API.md` gives each exported type its own heading and replaces the
   undefined `getDoc` placeholder with a self-contained example; so does the
-  `createMarkdownRoute` TSDoc example.
+  `createMarkdownRoute` TSDoc example. It no longer says to authorize in the
+  resolver, which only receives the slug, and no longer claims Remix, Hono and
+  Deno support, which is untested.
 - The README ends with links to the vllnt open source index, the package page,
   vllnt.com and the author; `llms.txt` ends with a matching "Ecosystem" list;
   the entry module's TSDoc links the package page.

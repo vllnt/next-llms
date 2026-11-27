@@ -93,6 +93,26 @@ const GAP = /^\s*(?:\/\/\s*)?(?:\.\.\.|…)\s*$|…|\/\*\s*\.\.\.\s*\*\//;
 const LINK = /\]\(([^\s)]+)\)/g;
 const SCHEME = /^[a-z][\d+.a-z-]*:/i;
 const EXAMPLE_PATHS = ["/docs/intro.md", "/md/docs/intro.md"];
+
+/**
+ * Status each README example route must answer for each of `EXAMPLE_PATHS`, in
+ * README order: quick start route, quick start `llms.txt`, files on disk (no
+ * `content/` folder here), prefixed route, private route without a token.
+ */
+const EXPECTED_STATUSES = [
+  [200, 404],
+  [200, 200],
+  [404, 404],
+  [404, 200],
+  [401, 401],
+];
+
+/** The retired company domain, assembled so the literal never appears here. */
+const RETIRED_DOMAIN = new RegExp(["vllnt", "ai"].join(String.raw`\.`), "i");
+
+/** Words that sell or steer instead of stating facts. */
+const PROMOTIONAL =
+  /\b(?:blazing|powerful|seamless(?:ly)?|effortless(?:ly)?|best-in-class|world-class|revolutionary|cutting-edge|game-chang\w*|we recommend|recommended|prefer this|for vllnt projects)\b/i;
 const SOURCE_FILES = [
   "src/index.ts",
   "src/llms-text.ts",
@@ -322,9 +342,14 @@ function callLabels(all: ts.Node[], name: string): string[] {
   });
 }
 
-/** Every `TypeError` message `generateLlmsText` and its helpers can throw. */
+/** Every `TypeError` message any source file throws with a literal message. */
 function thrownMessages(): string[] {
-  const all = nodes(sourceFile("src/llms-text.ts"));
+  return SOURCE_FILES.flatMap((path) => thrownMessagesIn(path));
+}
+
+/** `TypeError` messages thrown in one source file. */
+function thrownMessagesIn(path: string): string[] {
+  const all = nodes(sourceFile(path));
   return all.flatMap((node) => {
     if (
       !ts.isNewExpression(node) ||
@@ -464,9 +489,10 @@ describe("agent-first documentation", () => {
         .filter((block) => block.language === "")
         .map((block) => `${path}:${String(block.start)}`),
     );
-    const gaps = codeBlocks(readme).filter((block) =>
-      block.code.split("\n").some((line) => GAP.test(line)),
-    );
+    const gaps = [
+      ...codeBlocks(readme),
+      ...codeBlocks(read("docs/API.md")),
+    ].filter((block) => block.code.split("\n").some((line) => GAP.test(line)));
     expect(untagged).toEqual([]);
     expect(gaps).toEqual([]);
   });
@@ -556,7 +582,7 @@ describe("agent-first documentation", () => {
     expect(llms.split("https://oss.vllnt.com/llms.txt")).toHaveLength(2);
   });
 
-  it("never mentions vllnt.ai in a shipped file", () => {
+  it("never mentions the retired vllnt domain in a shipped file", () => {
     const shipped = [
       "package.json",
       "CHANGELOG.md",
@@ -564,7 +590,23 @@ describe("agent-first documentation", () => {
       ...SHIPPED_DOCUMENTS,
       ...SOURCE_FILES,
     ];
-    expect(shipped.filter((path) => /vllnt\.ai/i.test(read(path)))).toEqual([]);
+    expect(shipped.filter((path) => RETIRED_DOMAIN.test(read(path)))).toEqual(
+      [],
+    );
+  });
+
+  it("states facts without promotional or steering words", () => {
+    const texts = [
+      ...SHIPPED_DOCUMENTS.map((path) => [path, read(path)]),
+      ["package.json description", packageJson.description],
+    ];
+    expect(
+      texts.flatMap(([path = "", text = ""]) =>
+        PROMOTIONAL.test(text)
+          ? [`${path}: ${PROMOTIONAL.exec(text)?.[0] ?? ""}`]
+          : [],
+      ),
+    ).toEqual([]);
   });
 
   describe("README examples against the built package", () => {
@@ -575,6 +617,14 @@ describe("agent-first documentation", () => {
     );
     const files = examples.map((_, index) =>
       join(work, `example-${String(index + 1)}.ts`),
+    );
+    const apiExamples = codeBlocks(read("docs/API.md")).filter(
+      (block) =>
+        block.language === "ts" &&
+        block.code.includes(`from "${PACKAGE_NAME}"`),
+    );
+    const apiFiles = apiExamples.map((_, index) =>
+      join(work, `api-example-${String(index + 1)}.ts`),
     );
 
     beforeAll(() => {
@@ -604,6 +654,9 @@ describe("agent-first documentation", () => {
       examples.forEach((example, index) => {
         writeFileSync(files[index] ?? "", example.code);
       });
+      apiExamples.forEach((example, index) => {
+        writeFileSync(apiFiles[index] ?? "", example.code);
+      });
     }, COMPILE_TIMEOUT);
 
     it("has runnable TypeScript examples that import the package", () => {
@@ -613,10 +666,17 @@ describe("agent-first documentation", () => {
           (example) => !example.code.includes(`from "${PACKAGE_NAME}"`),
         ),
       ).toEqual([]);
+      expect(apiExamples.length).toBeGreaterThanOrEqual(2);
+    });
+
+    it("ships the package page link in the built entry declarations", () => {
+      expect(
+        readFileSync(join(packageDirectory, "dist/index.d.ts"), "utf8"),
+      ).toContain(`@see ${PACKAGE_PAGE}`);
     });
 
     it(
-      "type-checks every example against the built declarations",
+      "type-checks every README and docs/API.md example against the built declarations",
       () => {
         const project = join(work, "tsconfig.json");
         writeFileSync(
@@ -635,7 +695,7 @@ describe("agent-first documentation", () => {
             },
             exclude: [],
             extends: join(ROOT, "tsconfig.build.json"),
-            include: files.map((file) => basename(file)),
+            include: [...files, ...apiFiles].map((file) => basename(file)),
           }),
         );
         const result = spawnSync(
@@ -657,9 +717,6 @@ describe("agent-first documentation", () => {
     it(
       "runs every example route against the built package",
       async () => {
-        const quickStart = new Set(
-          codeBlocks(section(readme, "Quick start")).map((block) => block.code),
-        );
         const results = await Promise.all(
           examples.map(async (example, index) => {
             const output = (files[index] ?? "").replace(/\.ts$/, ".mjs");
@@ -678,30 +735,19 @@ describe("agent-first documentation", () => {
                 ? Reflect.get(module, "GET")
                 : undefined;
             if (!isRouteHandler(get)) return [`${label(index)}: no GET export`];
-            const responses = await Promise.all(
-              EXAMPLE_PATHS.map(async (path) => ({
-                path,
-                response: await get(new Request(`https://example.com${path}`)),
-              })),
+            return Promise.all(
+              EXAMPLE_PATHS.map(async (path) => {
+                const response: unknown = await get(
+                  new Request(`https://example.com${path}`),
+                );
+                return response instanceof Response
+                  ? response.status
+                  : `${label(index, path)}: not a Response`;
+              }),
             );
-            return responses.flatMap(({ path, response }) => {
-              if (!(response instanceof Response)) {
-                return [`${label(index, path)}: not a Response`];
-              }
-              if (response.status >= 500) {
-                return [`${label(index, path)}: ${String(response.status)}`];
-              }
-              return quickStart.has(example.code) &&
-                path === "/docs/intro.md" &&
-                response.status !== 200
-                ? [
-                    `${label(index, path)}: quick start ${String(response.status)}`,
-                  ]
-                : [];
-            });
           }),
         );
-        expect(results.flat()).toEqual([]);
+        expect(results).toEqual(EXPECTED_STATUSES);
       },
       COMPILE_TIMEOUT,
     );

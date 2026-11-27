@@ -14,11 +14,13 @@ strips a trailing `.md`, calls the resolver with the slug, and returns `200`
 (an empty string is content), or `404` `text/plain` when it returns `null` or
 any other non-string. A path with malformed percent-encoding or a decoded
 segment that is empty (such as `/.md`), `.`, `..`, or contains `/`, `\` or NUL
-gets `400` without calling the resolver. The handler imports nothing from
-`next`. Node.js >=18; no peer or runtime dependencies. Successful responses use
-public caching by default; pass `cacheControl: "private, no-store"` for private
-content and check the request in your own `GET`, because the resolver only
-receives the slug.
+gets `400` without calling the resolver; in Next.js, malformed percent-encoding
+gets Next's own `500` before the handler runs. In Next.js, `HEAD` is answered
+from `GET`, `OPTIONS` gets `204` and other methods get `405`. The handler
+imports nothing from `next`. Node.js >=18; no peer or runtime dependencies.
+Successful responses use public caching by default; pass
+`cacheControl: "private, no-store"` for private content and check the request in
+your own `GET`, because the resolver only receives the slug.
 
 When to use:
 
@@ -36,7 +38,7 @@ describes the package itself; it is not output of `generateLlmsText`.
 
 - [README](./README.md): Install, quick start, common tasks, limits and gotchas, compatibility
 - [API Reference](./docs/API.md): Every export, its types and the route's response behavior
-- [Errors and fixes](./README.md#errors-and-fixes): Every error message and error response, its cause and the fix
+- [Errors and fixes](./README.md#errors-and-fixes): Every error the package raises and every error response, its cause and the fix
 - [Changelog](./CHANGELOG.md): Version history and release notes
 - [Contributing](https://github.com/vllnt/next-llms/blob/main/CONTRIBUTING.md): Development setup, validation commands, release workflow
 

@@ -61,15 +61,15 @@ export function GET(): Response {
 Everything is exported from the package root. Full reference:
 [docs/API.md](docs/API.md).
 
-| Export                                                                                       | Kind     | What it is                                                         |
-| -------------------------------------------------------------------------------------------- | -------- | ------------------------------------------------------------------ |
-| [`generateLlmsText(config)`](docs/API.md#generatellmstextconfig)                             | function | Returns the `llms.txt` text as a `string` (no trailing newline).   |
-| [`createMarkdownRoute(resolver, options?)`](docs/API.md#createmarkdownrouteresolver-options) | function | Returns a `(request: Request) => Promise<Response>` route handler. |
-| [`LlmsConfig`](docs/API.md#llmsconfig)                                                       | type     | Input of `generateLlmsText`: title, summary, details, sections.    |
-| [`LlmsSection`](docs/API.md#llmssection)                                                     | type     | One `## {title}` section and its links.                            |
-| [`LlmsLink`](docs/API.md#llmslink)                                                           | type     | One `- [title](url): notes` line.                                  |
-| [`MarkdownResolver`](docs/API.md#markdownresolver)                                           | type     | `(slug: string[]) => string \| null \| Promise<string \| null>`.   |
-| [`MarkdownRouteOptions`](docs/API.md#markdownrouteoptions)                                   | type     | `{ cacheControl?: string }` for `createMarkdownRoute`.             |
+| Export                                                                                       | Kind     | What it is                                                                |
+| -------------------------------------------------------------------------------------------- | -------- | ------------------------------------------------------------------------- |
+| [`generateLlmsText(config)`](docs/API.md#generatellmstextconfig)                             | function | Returns the `llms.txt` text as a `string` (no trailing newline).          |
+| [`createMarkdownRoute(resolver, options?)`](docs/API.md#createmarkdownrouteresolver-options) | function | Returns a `(request: Request) => Promise<Response>` route handler.        |
+| [`LlmsConfig`](docs/API.md#llmsconfig)                                                       | type     | Input of `generateLlmsText`: title, summary, details, sections, optional. |
+| [`LlmsSection`](docs/API.md#llmssection)                                                     | type     | One `## {title}` section and its links.                                   |
+| [`LlmsLink`](docs/API.md#llmslink)                                                           | type     | One `- [title](url): notes` line.                                         |
+| [`MarkdownResolver`](docs/API.md#markdownresolver)                                           | type     | `(slug: string[]) => string \| null \| Promise<string \| null>`.          |
+| [`MarkdownRouteOptions`](docs/API.md#markdownrouteoptions)                                   | type     | `{ cacheControl?: string }` for `createMarkdownRoute`.                    |
 
 ## Common tasks
 
@@ -131,21 +131,24 @@ export async function GET(request: Request): Promise<Response> {
 ```
 
 Run on the Edge runtime: add `export const runtime = "edge";` to the route file.
-The package uses no Node.js APIs.
+The package uses no Node.js APIs. Next.js 16.4.6 serves it but warns at build
+time that the Edge Runtime is deprecated.
 
 ## Errors and fixes
 
-| Error or response                                                                                                                                            | Cause                                                                                                                                                   | Fix                                                                 |
-| ------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------- |
-| `TypeError: title must be a non-empty string`                                                                                                                | `generateLlmsText` got a missing, non-string or blank `title`.                                                                                          | Pass a non-empty `title`.                                           |
-| `TypeError: section title must be a non-empty string`                                                                                                        | A `sections[].title` is missing or blank.                                                                                                               | Give every section a title.                                         |
-| `TypeError: link title must be a non-empty string`                                                                                                           | A link in `sections[].links` or `optional` has no `title`.                                                                                              | Give every link a title.                                            |
-| `TypeError: link url must be a non-empty string`                                                                                                             | A link has no `url`.                                                                                                                                    | Give every link a `url`.                                            |
-| `TypeError: link url must not use a javascript:, data: or vbscript: scheme`                                                                                  | A link `url` starts with one of those schemes (case and control characters ignored).                                                                    | Use an `http(s)` or relative URL.                                   |
-| `TypeError` from the runtime's `Headers` (Node.js: `Headers.append: "<value>" is an invalid header value.` or `Cannot convert argument to a ByteString ...`) | `createMarkdownRoute` got a `cacheControl` with a line break, NUL or a character above U+00FF. It is thrown when the route is created, not per request. | Pass a plain ASCII header value.                                    |
-| `400` `Bad Request` (`text/plain`)                                                                                                                           | The path has malformed percent-encoding, or a segment that is empty, `.`, `..`, or contains `/`, `\` or NUL. The resolver is not called.                | Request a normal path. Example: `/docs/..%2Fsecret.md`.             |
-| `404` `Not Found` (`text/plain`)                                                                                                                             | The resolver returned `null` or any non-string (such as `undefined`).                                                                                   | Return the Markdown `string`; return `null` only for missing pages. |
-| Rejected promise (Next.js answers `500`)                                                                                                                     | The resolver threw or rejected; the handler does not catch it.                                                                                          | Catch errors in the resolver and return `null` or a string.         |
+| Error or response                                                                                                                                            | Cause                                                                                                                                                                                              | Fix                                                                 |
+| ------------------------------------------------------------------------------------------------------------------------------------------------------------ | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------- |
+| `TypeError: title must be a non-empty string`                                                                                                                | `generateLlmsText` got a missing, non-string or blank `title`.                                                                                                                                     | Pass a non-empty `title`.                                           |
+| `TypeError: section title must be a non-empty string`                                                                                                        | A `sections[].title` is missing or blank.                                                                                                                                                          | Give every section a title.                                         |
+| `TypeError: link title must be a non-empty string`                                                                                                           | A link in `sections[].links` or `optional` has no `title`.                                                                                                                                         | Give every link a title.                                            |
+| `TypeError: link url must be a non-empty string`                                                                                                             | A link has no `url`.                                                                                                                                                                               | Give every link a `url`.                                            |
+| `TypeError: link url must not use a javascript:, data: or vbscript: scheme`                                                                                  | A link `url` starts with one of those schemes (case and control characters ignored).                                                                                                               | Use an `http(s)` or relative URL.                                   |
+| `TypeError` from the runtime's `Headers` (Node.js: `Headers.append: "<value>" is an invalid header value.` or `Cannot convert argument to a ByteString ...`) | `createMarkdownRoute` got a `cacheControl` with a line break, NUL or a character above U+00FF. It is thrown when the route is created, not per request.                                            | Pass a plain ASCII header value.                                    |
+| `400` `Bad Request` (`text/plain`)                                                                                                                           | A decoded segment is empty, `.`, `..`, or contains `/`, `\` or NUL (for example `/docs/..%2Fsecret.md`), or, outside Next.js, the path has malformed percent-encoding. The resolver is not called. | Request a path whose segments are plain names.                      |
+| `404` `Not Found` (`text/plain`)                                                                                                                             | The resolver returned `null` or any non-string (such as `undefined`).                                                                                                                              | Return the Markdown `string`; return `null` only for missing pages. |
+| Rejected promise (Next.js answers `500`)                                                                                                                     | The resolver threw or rejected; the handler does not catch it.                                                                                                                                     | Catch errors in the resolver and return `null` or a string.         |
+| `500` `Internal Server Error` from Next.js                                                                                                                   | In Next.js, a path with malformed percent-encoding (such as `/docs/%E0.md`) fails inside Next.js before the route runs.                                                                            | Nothing to fix in the route; request a correctly encoded path.      |
+| Other `TypeError`s, such as `Cannot read properties of undefined (reading 'map')`                                                                            | Input that does not match the types, for example from plain JavaScript: a section without `links`, or no config at all.                                                                            | Pass values that match `LlmsConfig`.                                |
 
 ## Limits and gotchas
 
@@ -163,12 +166,18 @@ The package uses no Node.js APIs.
 - Default `Cache-Control` is public:
   `public, max-age=3600, s-maxage=86400, stale-while-revalidate=604800`.
 - An empty string from the resolver is content: `200` with an empty body.
-- `generateLlmsText` output has no trailing newline. Empty `summary`, `details`,
-  `notes` and an empty `optional` array are left out without a warning; a
-  section with no links renders only its heading.
-- `details` is inserted as-is; it is not escaped.
-- Only `GET` is created. In Next.js, `HEAD` is answered from `GET`, and other
-  methods get `405`.
+- `generateLlmsText` output has no trailing newline. A `summary`, `details` or
+  `notes` that is `""`, and an empty `optional` array, are left out without a
+  warning. Whitespace-only `notes` are also left out, but a whitespace-only
+  `summary` renders an empty `> ` line. A section with no links renders only its
+  heading.
+- `details` is inserted as-is, even when it is only whitespace; it is not
+  escaped.
+- In Next.js, a path with malformed percent-encoding gets Next's own `500`
+  before the route runs, so the handler's `400` for it is only seen outside
+  Next.js.
+- Only `GET` is created. In Next.js, `HEAD` is answered from `GET`, `OPTIONS`
+  gets `204` with `Allow: GET, HEAD, OPTIONS`, and other methods get `405`.
 - ESM only; there is no CommonJS build.
 
 ## Compatibility
@@ -177,8 +186,8 @@ The package uses no Node.js APIs.
 - Node.js `>=18` (`engines`). Needs the global `Request`, `Response`, `URL` and
   `Headers`.
 - Next.js is not imported. The package was checked by hand with Next.js 16.4.6
-  App Router route handlers on the Node.js and Edge runtimes; CI runs the unit
-  tests on Node.js only.
+  App Router route handlers on the Node.js and Edge runtimes (Next.js marks the
+  Edge Runtime deprecated); CI runs the unit tests on Node.js only.
 - Other runtimes with the same Web APIs (Deno, Bun, Hono, Remix) are not tested.
 - Release channels: stable on `latest`, prereleases on `canary`
   (`pnpm add @vllnt/next-llms@canary`). `generateLlmsFullText` from early canary

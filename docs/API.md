@@ -1,17 +1,15 @@
 # API Reference — @vllnt/next-llms
 
-**Compatibility:** any Web-standard runtime — Next.js App Router (Edge or Node),
-Remix, Hono, Deno. Node `>=18`. Zero runtime dependencies.
+**Compatibility:** uses only Web-standard `Request`, `Response`, `URL` and
+`Headers`. Checked with Next.js 16.4.6 App Router route handlers (Node.js and
+Edge runtimes); other runtimes are not tested. Node `>=18`. Zero runtime
+dependencies.
 
 See [release channels](../README.md#compatibility) and
 [errors and fixes](../README.md#errors-and-fixes). `generateLlmsFullText` from
 early canary builds is not part of the stable API.
 
-All exports are available from the package root:
-
-```ts
-import { generateLlmsText, createMarkdownRoute } from "@vllnt/next-llms";
-```
+All exports are available from the package root (`"@vllnt/next-llms"`).
 
 ---
 
@@ -65,7 +63,9 @@ empty.
 ### Example
 
 ```ts
-generateLlmsText({
+import { generateLlmsText } from "@vllnt/next-llms";
+
+export const text = generateLlmsText({
   title: "Acme Docs",
   summary: "Everything an agent needs to use Acme.",
   sections: [
@@ -118,15 +118,19 @@ the last one. It includes any route prefix (`/md/docs/intro.md` gives
 
 A request is rejected with `400` (the resolver is not called) when the path has
 malformed percent-encoding or a decoded segment that is empty, `.`, `..`, or
-contains `/`, `\` or a NUL byte. Every response carries
+contains `/`, `\` or a NUL byte. In Next.js, malformed percent-encoding (such as
+`/docs/%E0.md`) gets Next's own `500` before the handler runs, so only the
+segment checks are seen there. Every response carries
 `X-Content-Type-Options: nosniff`. An invalid `cacheControl` value throws a
 `TypeError` when the handler is created.
 
 Default `Cache-Control`:
 `public, max-age=3600, s-maxage=86400, stale-while-revalidate=604800` — override
 with `options.cacheControl`. For private or personalized responses, explicitly
-use `{ cacheControl: "private, no-store" }` and authorize access in the
-resolver. The public default is not suitable for authenticated content.
+use `{ cacheControl: "private, no-store" }`, and check the request in your own
+`GET` before calling the handler: the resolver receives only the slug (see
+[Common tasks](../README.md#common-tasks)). The public default is not suitable
+for authenticated content.
 
 ### Example
 
