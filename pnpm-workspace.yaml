@@ -1,0 +1,21 @@
+# pnpm settings for this single-package repo (no workspace packages).
+
+# Supply-chain policy: resolve only versions published at least 7 days ago.
+minimumReleaseAge: 10080
+minimumReleaseAgeExclude:
+  - "@vllnt/*"
+
+allowBuilds:
+  esbuild: false
+
+# Patched releases for dev-only transitives that cannot move on their own (all
+# via @vllnt/eslint-config). minimatch: @convex-dev/eslint-plugin pins
+# typescript-eslint ~8.58, which asks for minimatch ^10. deepmerge-ts:
+# eslint-plugin-functional. handlebars: eslint-plugin-boundaries 5. Removing any
+# one of these brings back a `pnpm audit` advisory. The minimatch range is the
+# advisory range (GHSA-g3hv-75wg-m249), so the minimatch 3 used by
+# eslint-plugin-react and eslint-plugin-jsx-a11y is untouched.
+overrides:
+  "minimatch@>=7.0.0 <11.0.1": 11.0.9
+  "deepmerge-ts@<8.0.0": 8.0.2
+  "handlebars@<4.7.10": 4.7.10
