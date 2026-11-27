@@ -98,5 +98,5 @@ later 1.0.0 still waits on `route-ergonomics` and `auto-discovery`.
 - `first-stable-release.1` — `planned` — a 1.0.0 commitment still needs the
   public API settled (`route-ergonomics` + `auto-discovery`).
 - `first-stable-release.2` — `done` — first stable `0.1.0` was published to npm
-  `latest` from a `v0.1.0` tag on 2026-11-22 (the former canary-only hold is
-  lifted).
+  `latest` from a `v0.1.0` tag (CHANGELOG date 2026-11-23; the former
+  canary-only hold is lifted).
