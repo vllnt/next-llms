@@ -74,10 +74,11 @@ over Web-standard `Request` / `Response` / `URL`.
 - README layout is shared by every `@vllnt` package and enforced by
   `src/documentation.test.ts`: section names and order, install and first
   example in the first 40 lines, tagged code blocks, resolving links, every
-  export and error documented, the vllnt footer and the `llms.txt` Ecosystem
-  block. The README examples are type-checked and run against a fresh build.
+  export and error documented, the exact `## Links` section before `## License`,
+  the vllnt footer and the `llms.txt` Ecosystem block. The README examples are
+  type-checked and run against a fresh build.
 - `.prettierrc.json` sets `proseWrap: preserve` for `README.md` only, so the
-  one-line vllnt footer stays exactly as written.
+  one-line `## Links` bullets and vllnt footer stay exactly as written.
 
 ## Repository policy
 

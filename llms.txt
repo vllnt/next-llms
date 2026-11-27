@@ -52,6 +52,8 @@ describes the package itself; it is not output of `generateLlmsText`.
 ## Ecosystem
 
 - [Package page](https://oss.vllnt.com/packages/next-llms)
+- [Release feed](https://oss.vllnt.com/packages/next-llms/rss.xml)
 - [All @vllnt packages](https://oss.vllnt.com/llms.txt)
+- [Search vllnt packages and docs](https://index.vllnt.com)
 - [vllnt](https://vllnt.com/llms.txt)
 - [Author](https://bntvllnt.com)

@@ -65,9 +65,19 @@ const REPO_SECTIONS = [
   "Security",
   "Related packages",
   "Contributing",
-  "Author",
+  "Links",
   "License",
 ];
+
+/** The exact `## Links` section, directly before `## License`. */
+const LINKS = `## Links
+
+- Docs and changelog: [oss.vllnt.com/packages/next-llms](${PACKAGE_PAGE}) · [release feed](${PACKAGE_PAGE}/rss.xml)
+- All @vllnt packages: [oss.vllnt.com](https://oss.vllnt.com) · [search packages and docs on index.vllnt.com](https://index.vllnt.com)
+- Source and issues: [GitHub](https://github.com/vllnt/next-llms) · [issues](https://github.com/vllnt/next-llms/issues) · [npm](https://www.npmjs.com/package/${PACKAGE_NAME})
+- Questions and updates: [Discord](https://bntvllnt.com/discord) · [X @bntvllnt](https://x.com/bntvllnt)
+- Company and author: [vllnt.com](https://vllnt.com) · [bntvllnt.com](https://bntvllnt.com) · [GitHub @bntvllnt](https://github.com/bntvllnt) · [LinkedIn](https://linkedin.com/in/bntvllnt)
+- Sponsor: [GitHub Sponsors](https://github.com/sponsors/bntvllnt)`;
 
 /** The exact last lines of every `@vllnt` README. */
 const FOOTER = `---
@@ -79,7 +89,9 @@ Part of [vllnt open source](https://oss.vllnt.com) · [Package page](${PACKAGE_P
 const LLMS_ECOSYSTEM = `## Ecosystem
 
 - [Package page](${PACKAGE_PAGE})
+- [Release feed](${PACKAGE_PAGE}/rss.xml)
 - [All @vllnt packages](https://oss.vllnt.com/llms.txt)
+- [Search vllnt packages and docs](https://index.vllnt.com)
 - [vllnt](https://vllnt.com/llms.txt)
 - [Author](https://bntvllnt.com)
 `;
@@ -570,6 +582,10 @@ describe("agent-first documentation", () => {
     expect(missing).toEqual([]);
     expect(llms).toContain("](./docs/API.md)");
     expect(llms).toContain("](./README.md#errors-and-fixes)");
+  });
+
+  it("puts the exact Links section directly before License", () => {
+    expect(readme).toContain(`\n${LINKS}\n\n## License`);
   });
 
   it("ends the README with the vllnt footer", () => {

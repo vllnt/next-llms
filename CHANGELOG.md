@@ -16,8 +16,9 @@ unchanged from 0.1.0; only TSDoc comments in `dist/` and `src/` differ.
 - `llms.txt` links the files shipped in the package (`README.md`, `docs/API.md`,
   `CHANGELOG.md`, `LICENSE`) by relative path, so they match the installed
   version, and adds a "For coding agents" note and an Ecosystem link to the
-  vllnt oss index. The README gains matching "For coding agents" and "Related
-  packages" sections.
+  vllnt oss index, the release feed and package search. The README gains
+  matching "For coding agents" and "Related packages" sections and a "Links"
+  section in place of "Author".
 - `package.json` `homepage` points to
   `https://oss.vllnt.com/packages/next-llms`.
 - Every push to `main` that changes the package or its shipped docs publishes a

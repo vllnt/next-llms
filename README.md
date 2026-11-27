@@ -227,12 +227,14 @@ every package at [oss.vllnt.com/packages](https://oss.vllnt.com/packages).
 See
 [CONTRIBUTING.md](https://github.com/vllnt/next-llms/blob/main/CONTRIBUTING.md).
 
-## Author
+## Links
 
-Built by [bntvllnt](https://github.com/bntvllnt) ·
-[bntvllnt.com](https://bntvllnt.com) · [X @bntvllnt](https://x.com/bntvllnt)
-
-If this is useful, [sponsor the work](https://github.com/sponsors/bntvllnt).
+- Docs and changelog: [oss.vllnt.com/packages/next-llms](https://oss.vllnt.com/packages/next-llms) · [release feed](https://oss.vllnt.com/packages/next-llms/rss.xml)
+- All @vllnt packages: [oss.vllnt.com](https://oss.vllnt.com) · [search packages and docs on index.vllnt.com](https://index.vllnt.com)
+- Source and issues: [GitHub](https://github.com/vllnt/next-llms) · [issues](https://github.com/vllnt/next-llms/issues) · [npm](https://www.npmjs.com/package/@vllnt/next-llms)
+- Questions and updates: [Discord](https://bntvllnt.com/discord) · [X @bntvllnt](https://x.com/bntvllnt)
+- Company and author: [vllnt.com](https://vllnt.com) · [bntvllnt.com](https://bntvllnt.com) · [GitHub @bntvllnt](https://github.com/bntvllnt) · [LinkedIn](https://linkedin.com/in/bntvllnt)
+- Sponsor: [GitHub Sponsors](https://github.com/sponsors/bntvllnt)
 
 ## License
 
