@@ -9,10 +9,13 @@ allowBuilds:
   esbuild: false
 
 # Patched releases for dev-only transitives that cannot move on their own (all
-# via @vllnt/eslint-config: typescript-eslint 8.58 under @convex-dev/eslint-plugin,
-# eslint-plugin-functional and eslint-plugin-boundaries). Removing any one of these brings back a `pnpm
-# audit` advisory. The minimatch range is the advisory range
-# (GHSA-g3hv-75wg-m249), so the minimatch 3 that eslint uses is untouched.
+# via @vllnt/eslint-config). minimatch: typescript-eslint 8.58 and 8.72 (under
+# @convex-dev/eslint-plugin, eslint-plugin-functional and
+# eslint-plugin-perfectionist) ask for minimatch ^10. deepmerge-ts:
+# eslint-plugin-functional. handlebars: eslint-plugin-boundaries. Removing any
+# one of these brings back a `pnpm audit` advisory. The minimatch range is the
+# advisory range (GHSA-g3hv-75wg-m249), so the minimatch 3 used by
+# eslint-plugin-react and eslint-plugin-jsx-a11y is untouched.
 overrides:
   "minimatch@>=7.0.0 <11.0.1": 11.0.9
   "deepmerge-ts@<8.0.0": 8.0.2
