@@ -44,7 +44,8 @@ export type LlmsConfig = {
 
 /**
  * Maps a route slug to its markdown content, or `null` if there is no page for
- * the slug. The slug is the path segments with any trailing `.md` stripped.
+ * the slug. The slug is the URL-decoded path segments, including any route
+ * prefix, with a trailing lowercase `.md` removed from the last segment.
  */
 export type MarkdownResolver = (
   slug: string[],

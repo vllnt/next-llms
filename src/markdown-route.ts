@@ -9,13 +9,15 @@ const PLAIN_TEXT_HEADERS = {
 };
 
 /**
- * Decode a URL pathname into slug segments, stripping a trailing `.md` from the
- * last segment. `/docs/intro.md` → `["docs", "intro"]`; `/` → `[]`.
+ * Split a URL pathname into slug segments, dropping empty segments (from `//`),
+ * then strip a trailing lowercase `.md` from the last raw segment, then
+ * URL-decode each segment. `/docs/intro.md` → `["docs", "intro"]`; `/` → `[]`.
  *
  * Returns `null` when the path cannot name a page safely: malformed
- * percent-encoding, or a decoded segment that is empty, `.`, `..`, or contains
- * `/`, `\` or a NUL byte (so a resolver that maps slugs to files is never
- * handed a traversal sequence such as `..%2F..%2Fsecret`).
+ * percent-encoding, a segment left empty by stripping `.md` (`/docs/.md`), or a
+ * decoded segment that is `.`, `..`, or contains `/`, `\` or a NUL byte (so a
+ * resolver that maps slugs to files is never handed a traversal sequence such
+ * as `..%2F..%2Fsecret`).
  */
 function pathnameToSlug(pathname: string): string[] | null {
   const segments = pathname.split("/").filter((segment) => segment.length > 0);
@@ -37,7 +39,7 @@ function pathnameToSlug(pathname: string): string[] | null {
  * Create a Next.js App Router route handler that serves a slug's markdown
  * content. Mount it at a catch-all route (`app/[...slug]/route.ts`). The handler
  * is a pure Web-standard `(request) => Promise<Response>` — it imports nothing
- * from `next` and runs in any Web runtime.
+ * from `next` and uses only Web-standard APIs.
  *
  * - Strips a trailing `.md` from the path (`/docs/intro.md` resolves the slug
  *   `["docs", "intro"]`).
@@ -46,8 +48,9 @@ function pathnameToSlug(pathname: string): string[] | null {
  * - Returns `404` (plain text) when the resolver returns `null` (or any
  *   non-string value, such as `undefined` from a missing map entry).
  * - Returns `400` (plain text) without calling the resolver when the path has
- *   malformed percent-encoding or a segment that is empty, `.`, `..`, or
- *   contains `/`, `\` or a NUL byte.
+ *   malformed percent-encoding, a segment left empty by stripping `.md`
+ *   (`/docs/.md`), or a decoded segment that is `.`, `..`, or contains `/`, `\`
+ *   or a NUL byte. Empty segments from `//` are dropped, not rejected.
  * - Sets `X-Content-Type-Options: nosniff` on every response.
  *
  * @param resolver - Maps a slug to its markdown, or `null` when not found.

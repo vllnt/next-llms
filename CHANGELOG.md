@@ -9,16 +9,20 @@ adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 ## [0.1.1] - 2026-11-27
 
 Documentation and tooling release. The published code, exports and types are
-unchanged from 0.1.0; only TSDoc comments in `dist/` and `src/` differ.
+unchanged from 0.1.0; only TSDoc comments in `dist/` and `src/`, and the
+matching source maps, differ.
 
 ### Changed
 
 - `llms.txt` links the files shipped in the package (`README.md`, `docs/API.md`,
   `CHANGELOG.md`, `LICENSE`) by relative path, so they match the installed
-  version, and adds a "For coding agents" note and an Ecosystem link to the
-  vllnt oss index, the release feed and package search. The README gains
-  matching "For coding agents" and "Related packages" sections and a "Links"
-  section in place of "Author".
+  version, adds a "For coding agents" note, and ends with an "Ecosystem" list:
+  the package page, the release feed, the vllnt oss index, package search, vllnt
+  and the author. The README gains matching "For coding agents" and "Related
+  packages" sections and ends with a "Links" section, in place of "Author", with
+  the package page, release feed, oss index, package search, source, community,
+  vllnt.com, author and sponsor links. The entry module's TSDoc links the
+  package page.
 - `package.json` `homepage` points to
   `https://oss.vllnt.com/packages/next-llms`.
 - Every push to `main` that changes the package or its shipped docs publishes a
@@ -39,9 +43,10 @@ unchanged from 0.1.0; only TSDoc comments in `dist/` and `src/` differ.
   `createMarkdownRoute` TSDoc example. It no longer says to authorize in the
   resolver, which only receives the slug, and no longer claims Remix, Hono and
   Deno support, which is untested.
-- The README ends with links to the vllnt open source index, the package page,
-  vllnt.com and the author; `llms.txt` ends with a matching "Ecosystem" list;
-  the entry module's TSDoc links the package page.
+- The docs state that empty segments from `//` are dropped and only a segment
+  left empty by stripping `.md` gets `400`, that `.md` is stripped before the
+  segments are URL-decoded, that `cacheControl: ""` sends an empty
+  `Cache-Control` header, and that CI runs the tests on Node.js 24 only.
 - Development tooling moves to eslint 10, pnpm 12 and `@vllnt/typescript` 3, and
   CI now checks formatting (`pnpm format:check`).
 
@@ -62,9 +67,9 @@ version.
 ### Added
 
 - First stable release of `@vllnt/next-llms`.
-- `generateLlmsText(config)` — generate a spec-compliant `llms.txt` index: an
-  `#` title, a `>` blockquote, optional free prose, `## Section` link lists, and
-  a droppable `## Optional` section (per the llmstxt.org specification).
+- `generateLlmsText(config)` — generate an `llms.txt` index in the llmstxt.org
+  shape: an `#` title, a `>` blockquote, optional free prose, `## Section` link
+  lists, and a droppable `## Optional` section.
 - `createMarkdownRoute(resolver, options?)` — a Web-standard
   `(request) => Promise<Response>` App Router route handler that strips a
   trailing `.md`, resolves the slug, and returns `text/markdown` with a
@@ -76,10 +81,10 @@ version.
 ### Security
 
 - `createMarkdownRoute` now answers `400` without calling the resolver when the
-  path has malformed percent-encoding (previously an unhandled `URIError`) or a
-  decoded segment that is empty, `.`, `..`, or contains `/`, `\` or a NUL byte
-  (for example `..%2F..%2Fsecret`), so resolvers that map slugs to files never
-  receive a traversal sequence.
+  path has malformed percent-encoding (previously an unhandled `URIError`), a
+  segment left empty by stripping `.md`, or a decoded segment that is `.`, `..`,
+  or contains `/`, `\` or a NUL byte (for example `..%2F..%2Fsecret`), so
+  resolvers that map slugs to files never receive a traversal sequence.
 - `createMarkdownRoute` answers `404` when the resolver returns a non-string
   value such as `undefined` (previously an empty `200`), sets
   `X-Content-Type-Options: nosniff`, and throws a `TypeError` at creation for an

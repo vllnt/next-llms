@@ -2,8 +2,8 @@
 
 **Compatibility:** uses only Web-standard `Request`, `Response`, `URL` and
 `Headers`. Checked with Next.js 16.4.6 App Router route handlers (Node.js and
-Edge runtimes); other runtimes are not tested. Node `>=18`. Zero runtime
-dependencies.
+Edge runtimes); other runtimes are not tested. Node `>=18`; CI runs the tests on
+Node.js 24 only, so 18 to 23 are not tested. Zero runtime dependencies.
 
 See [release channels](../README.md#compatibility) and
 [errors and fixes](../README.md#errors-and-fixes). `generateLlmsFullText` from
@@ -96,29 +96,35 @@ function createMarkdownRoute(
 ### `MarkdownResolver`
 
 `(slug: string[]) => string | null | Promise<string | null>`. The slug is the
-full request path's segments, URL-decoded, with a trailing `.md` removed from
-the last one. It includes any route prefix (`/md/docs/intro.md` gives
-`["md", "docs", "intro"]`). Return a string for content or `null` for not found.
+full request path's non-empty segments: a trailing lowercase `.md` is removed
+from the last raw segment, then each segment is URL-decoded (`/docs/intro%2Emd`
+gives `["docs", "intro.md"]`). It includes any route prefix (`/md/docs/intro.md`
+gives `["md", "docs", "intro"]`). Return a string for content or `null` for not
+found.
 
 ### `MarkdownRouteOptions`
 
 `{ cacheControl?: string }` — the `Cache-Control` value for `200` responses.
+`cacheControl: ""` sends an empty `Cache-Control` header; it does not fall back
+to the default.
 
 ### Behavior
 
-| Request                      | Resolver returns | Response                                                             |
-| ---------------------------- | ---------------- | -------------------------------------------------------------------- |
-| `/docs/intro.md`             | `"# Intro…"`     | `200`, `Content-Type: text/markdown; charset=utf-8`, `Cache-Control` |
-| `/docs/intro.md`             | `""`             | `200` with an empty body (empty string is content, not absence)      |
-| `/missing.md`                | `null`           | `404`, `Content-Type: text/plain; charset=utf-8`, body `Not Found`   |
-| `/missing.md`                | non-string       | `404`, same as `null`                                                |
-| `/..%2Fsecret`, `/a%00b`     | not called       | `400`, `text/plain`, body `Bad Request`                              |
-| `/docs/getting%20started.md` | —                | resolver receives `["docs", "getting started"]`                      |
-| `/`                          | —                | resolver receives `[]`                                               |
+| Request                      | Resolver returns | Response                                                                                    |
+| ---------------------------- | ---------------- | ------------------------------------------------------------------------------------------- |
+| `/docs/intro.md`             | `"# Intro…"`     | `200`, `Content-Type: text/markdown; charset=utf-8`, `Cache-Control`                        |
+| `/docs/intro.md`             | `""`             | `200` with an empty body (empty string is content, not absence)                             |
+| `/missing.md`                | `null`           | `404`, `Content-Type: text/plain; charset=utf-8`, body `Not Found`                          |
+| `/missing.md`                | non-string       | `404`, same as `null`                                                                       |
+| `/..%2Fsecret`, `/a%00b`     | not called       | `400`, `text/plain`, body `Bad Request`                                                     |
+| `/docs/getting%20started.md` | —                | resolver receives `["docs", "getting started"]`                                             |
+| `/`                          | —                | resolver receives `[]` (needs `app/[[...slug]]` in Next.js; `[...slug]` does not match `/`) |
 
 A request is rejected with `400` (the resolver is not called) when the path has
-malformed percent-encoding or a decoded segment that is empty, `.`, `..`, or
-contains `/`, `\` or a NUL byte. In Next.js, malformed percent-encoding (such as
+malformed percent-encoding, a segment left empty by stripping `.md` (`/.md`,
+`/docs/.md`), or a decoded segment that is `.`, `..`, or contains `/`, `\` or a
+NUL byte. Empty segments from `//` are dropped, not rejected (`/docs//intro.md`
+gives `["docs", "intro"]`). In Next.js, malformed percent-encoding (such as
 `/docs/%E0.md`) gets Next's own `500` before the handler runs, so only the
 segment checks are seen there. Every response carries
 `X-Content-Type-Options: nosniff`. An invalid `cacheControl` value throws a
