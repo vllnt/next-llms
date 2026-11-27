@@ -87,6 +87,22 @@ Full reference: [docs/API.md](docs/API.md). Also see the [LLM index](llms.txt),
 [changelog](CHANGELOG.md), and
 [issue tracker](https://github.com/vllnt/next-llms/issues).
 
+## For coding agents
+
+The docs ship inside the package at `node_modules/@vllnt/next-llms/docs/`, next
+to `README.md`, `CHANGELOG.md`, `llms.txt` and the TypeScript source in `src/`.
+They match the installed version. Read them before writing code that uses this
+package.
+
+The bundled `llms.txt` describes this package. It is not output of
+`generateLlmsText`; the `llms.txt` your site serves is the one you build with
+`generateLlmsText`.
+
+## Related packages
+
+No other `@vllnt` package covers `llms.txt` manifests or markdown routes. See
+every package at [oss.vllnt.com/packages](https://oss.vllnt.com/packages).
+
 ## Security
 
 - No secrets touched — the package generates text and serves whatever your
@@ -121,11 +137,12 @@ See [CONTRIBUTING.md](CONTRIBUTING.md).
 Built by [bntvllnt](https://github.com/bntvllnt) ·
 [bntvllnt.com](https://bntvllnt.com) · [X @bntvllnt](https://x.com/bntvllnt)
 
-Part of the [@vllnt](https://github.com/vllnt) open-source fleet —
-[vllnt.com](https://vllnt.com)
-
 If this is useful, [sponsor the work](https://github.com/sponsors/bntvllnt).
 
 ## License
 
 MIT — see [LICENSE](LICENSE).
+
+---
+
+Part of vllnt oss: <https://oss.vllnt.com>
