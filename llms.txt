@@ -7,13 +7,16 @@
 Next.js (App Router) and any Web-standard runtime. It exposes two functions.
 `generateLlmsText(config)` returns an `llms.txt` index string in the llmstxt.org
 shape — an `#` title, a `>` blockquote, optional free prose, `## Section` link
-lists (`- [title](https://github.com/vllnt/next-llms/blob/main/url): notes`), and a droppable `## Optional` section.
+lists (`- [title](url): notes`), and a droppable `## Optional` section.
 `createMarkdownRoute(resolver, options?)` returns a Web-standard
 `(request) => Promise<Response>` route handler: it URL-decodes the pathname,
 strips a trailing `.md`, calls the resolver with the slug, and returns `200`
 `text/markdown` with a `Cache-Control` header when the resolver returns a string
-(an empty string is content), or `404` `text/plain` when it returns `null`. The
-handler imports nothing from `next`; `null` is the explicit not-found sentinel.
+(an empty string is content), or `404` `text/plain` when it returns `null` or
+any other non-string. A path with malformed percent-encoding or a decoded
+segment that is empty (such as `/.md`), `.`, `..`, or contains `/`, `\` or NUL
+gets `400` without calling the resolver. The handler imports nothing from `next`; `null` is the explicit
+not-found sentinel.
 
 The stable API is the two functions above; the older `generateLlmsFullText`
 API from early canary builds is not included. Install `@vllnt/next-llms`;
@@ -21,16 +24,30 @@ prereleases are on the `canary` tag. Node.js >=18; no peer dependencies.
 Successful responses use public caching by default. Authorize in the resolver and
 set `cacheControl: "private, no-store"` for private/personalized content.
 
+This file describes the package itself. It is not output of `generateLlmsText`;
+the `llms.txt` your site serves is the one you build with `generateLlmsText`.
+
+## For coding agents
+
+The docs ship inside the package at `node_modules/@vllnt/next-llms/docs/`,
+next to `README.md`, `CHANGELOG.md`, this `llms.txt` and the TypeScript source
+in `src/`. They match the installed version. Read them before writing code that
+uses this package.
+
 ## Docs
 
-- [README](https://github.com/vllnt/next-llms/blob/main/README.md): Overview, installation, usage examples
-- [API Reference](https://github.com/vllnt/next-llms/blob/main/docs/API.md): Function signatures, config types, response behavior
-- [Changelog](https://github.com/vllnt/next-llms/blob/main/CHANGELOG.md): Version history and release notes
+- [README](./README.md): Overview, installation, usage examples
+- [API Reference](./docs/API.md): Function signatures, config types, response behavior
+- [Changelog](./CHANGELOG.md): Version history and release notes
 - [Contributing](https://github.com/vllnt/next-llms/blob/main/CONTRIBUTING.md): Development setup, validation commands, release workflow
+
+## Ecosystem
+
+- [vllnt oss](https://oss.vllnt.com/llms.txt): Index of every `@vllnt` package
 
 ## Optional
 
-- [AGENTS](https://github.com/vllnt/next-llms/blob/main/AGENTS.md): Canonical agent instructions for this repository
+- [AGENTS](https://github.com/vllnt/next-llms/blob/main/AGENTS.md): Agent instructions for contributors to this repository
 - [Security Policy](https://github.com/vllnt/next-llms/blob/main/SECURITY.md): Vulnerability reporting policy
 - [Code of Conduct](https://github.com/vllnt/next-llms/blob/main/CODE_OF_CONDUCT.md): Community participation guidelines
-- [License](https://github.com/vllnt/next-llms/blob/main/LICENSE): MIT license
+- [License](./LICENSE): MIT license

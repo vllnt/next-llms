@@ -24,8 +24,8 @@ publishing, no Convex.
   `vitest.config.mts` (node env, 100% thresholds), renovate, `.gitignore`, MIT
   `LICENSE`.
 - `scaffold-repo.2` — `done` — CI (`ci.yml` lint/typecheck/test/build), canary
-  `publish.yml` (`@canary`-only, OIDC provenance, `CANARY_ENABLED`-gated),
-  `email-guard.yml`, `.github/` templates.
+  `publish.yml` (`@canary`-only, OIDC provenance), `email-guard.yml`, `.github/`
+  templates.
 - `scaffold-repo.3` — `done` — `AGENTS.md` repository policy from the hub.
 
 ## ship-v0-core — `done`

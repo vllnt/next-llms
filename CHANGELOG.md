@@ -6,6 +6,26 @@ adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
 
+### Changed
+
+- `llms.txt` links the files shipped in the package (`README.md`, `docs/API.md`,
+  `CHANGELOG.md`, `LICENSE`) by relative path, so they match the installed
+  version, and adds a "For coding agents" note and an Ecosystem link to the
+  vllnt oss index. The README gains matching "For coding agents" and "Related
+  packages" sections.
+- `package.json` `homepage` points to
+  `https://oss.vllnt.com/packages/next-llms`.
+- Every push to `main` that changes the package or its shipped docs publishes a
+  canary; the canary job no longer depends on a repository variable.
+
+### Fixed
+
+- The `llms.txt` link-list example showed a GitHub URL instead of `url`.
+- `llms.txt` now documents the `400` response for unsafe paths and the `404` for
+  any non-string resolver result.
+- README links to `SECURITY.md` and `CONTRIBUTING.md`, which are not in the
+  package, now point to GitHub so they resolve from `node_modules`.
+
 ## [0.1.0] - 2026-11-23
 
 First stable release. Earlier `0.1.0-canary.*` builds (npm `latest` pointed at
