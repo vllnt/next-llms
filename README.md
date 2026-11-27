@@ -119,7 +119,8 @@ every package at [oss.vllnt.com/packages](https://oss.vllnt.com/packages).
   `{ cacheControl: "private, no-store" }`; authorization alone does not disable
   caching.
 
-See [docs/API.md](docs/API.md) and the [security reporting policy](SECURITY.md).
+See [docs/API.md](docs/API.md) and the
+[security reporting policy](https://github.com/vllnt/next-llms/blob/main/SECURITY.md).
 
 ## Testing
 
@@ -130,7 +131,8 @@ pnpm test:coverage  # enforced 100% on covered files
 
 ## Contributing
 
-See [CONTRIBUTING.md](CONTRIBUTING.md).
+See
+[CONTRIBUTING.md](https://github.com/vllnt/next-llms/blob/main/CONTRIBUTING.md).
 
 ## Author
 

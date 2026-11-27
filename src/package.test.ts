@@ -6,7 +6,11 @@ import { describe, expect, it } from "vitest";
 
 import * as api from "./index.js";
 
-/** Files every published tarball must contain (`dist/` is checked at publish). */
+/**
+ * Files every published tarball must contain. `dist/` is built only in the
+ * publish job, so it is allowed here but not required. This runs on every PR;
+ * `scripts/check-package-contents.sh` repeats the allowlist check at publish.
+ */
 const REQUIRED = [
   "package.json",
   "README.md",
@@ -17,7 +21,16 @@ const REQUIRED = [
   "src/index.ts",
 ];
 
-const REPO_BLOB = "https://github.com/vllnt/next-llms/blob/main/";
+/** A list-item link without a URL scheme, with any leading `./` dropped. */
+const RELATIVE_LINK =
+  /^- \[[^\]]*\]\((?![a-z][\d+.a-z-]*:)(?:\.\/)?([^\s#)]+)/gim;
+
+/** A link into this repository on GitHub, capturing the file path. */
+const REPO_LINK =
+  /https:\/\/(?:github\.com\/vllnt\/next-llms\/(?:blob|raw|tree)|raw\.githubusercontent\.com\/vllnt\/next-llms)\/[^/]+\/([^\s#)]+)/g;
+
+/** Shipped build output and source: flat `dist/` files and non-test `src/*.ts`. */
+const BUILD_OR_SOURCE = /^(?:dist\/[^/]+\.(?:d\.ts|js|map)|src\/[^/]+\.ts)$/;
 
 function packedFiles(): string[] {
   const output = execFileSync(
@@ -49,14 +62,14 @@ describe("published tarball", () => {
 
   it("contains nothing besides the required files, dist and source", () => {
     const extra = files.filter(
-      (path) => !REQUIRED.includes(path) && !/^(?:dist|src)\//.test(path),
+      (path) => !REQUIRED.includes(path) && !BUILD_OR_SOURCE.test(path),
     );
     const tests = files.filter((path) => /\.(?:test|spec)\./.test(path));
     expect([...extra, ...tests]).toEqual([]);
   });
 
   it("resolves every relative llms.txt link inside the tarball", () => {
-    const links = [...llmsText.matchAll(/\]\(\.\/([^)#]+)/g)].flatMap(
+    const links = [...llmsText.matchAll(RELATIVE_LINK)].flatMap(
       (match) => match[1] ?? [],
     );
     expect(links.length).toBeGreaterThan(0);
@@ -64,9 +77,7 @@ describe("published tarball", () => {
   });
 
   it("links shipped files relatively, not to the main branch", () => {
-    const pinnedToMain = [
-      ...llmsText.matchAll(new RegExp(`${REPO_BLOB}([^)#]+)`, "g")),
-    ]
+    const pinnedToMain = [...llmsText.matchAll(REPO_LINK)]
       .flatMap((match) => match[1] ?? [])
       .filter((path) => files.includes(path));
     expect(pinnedToMain).toEqual([]);
@@ -77,9 +88,11 @@ describe("published tarball", () => {
     const typeNames = [
       ...readFileSync("src/index.ts", "utf8").matchAll(/^ {2}(\w+),$/gm),
     ].flatMap((match) => match[1] ?? []);
-    const missing = [...Object.keys(api), ...typeNames].filter(
-      (name) => !apiDocument.includes(name),
+    const names = [...Object.keys(api), ...typeNames];
+    const missing = names.filter(
+      (name) => !new RegExp(String.raw`\b${name}\b`).test(apiDocument),
     );
+    expect(names).toHaveLength(7);
     expect(missing).toEqual([]);
   });
 });

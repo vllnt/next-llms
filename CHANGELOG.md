@@ -21,6 +21,10 @@ adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 ### Fixed
 
 - The `llms.txt` link-list example showed a GitHub URL instead of `url`.
+- `llms.txt` now documents the `400` response for unsafe paths and the `404` for
+  any non-string resolver result.
+- README links to `SECURITY.md` and `CONTRIBUTING.md`, which are not in the
+  package, now point to GitHub so they resolve from `node_modules`.
 
 ## [0.1.0] - 2026-11-23
 
