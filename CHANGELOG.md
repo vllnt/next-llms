@@ -4,9 +4,7 @@ All notable changes to this project are documented here. The format is based on
 [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and this project
 adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [Unreleased]
-
-## [0.1.1] - 2026-11-27
+## [0.1.1] - 2026-11-28
 
 Documentation and tooling release. The published code, exports and types are
 unchanged from 0.1.0; only TSDoc comments in `dist/` and `src/`, and the
@@ -26,15 +24,13 @@ matching source maps, differ.
 - `package.json` `homepage` points to
   `https://oss.vllnt.com/packages/next-llms`.
 - Every push to `main` that changes the package or its shipped docs publishes a
-  canary; the canary job no longer depends on a repository variable.
+  canary.
 - The README is rewritten for coding agents: a one-sentence summary, then "For
   coding agents", "When to use", "Install", "Quick start", "API", "Common
   tasks", "Errors and fixes", "Limits and gotchas" and "Compatibility". The
   examples are self-contained, and "Errors and fixes" lists every error the
   package raises itself or returns, plus the Next.js `500` for malformed
-  percent-encoding. A test checks the section order, the code blocks, the links,
-  that every export and error is documented, and runs the README examples
-  against the built package.
+  percent-encoding.
 - `package.json` `description` and `keywords` name what the package does and its
   stack. `llms.txt` carries the same summary and use cases and links the API
   reference and the errors table.
@@ -42,24 +38,19 @@ matching source maps, differ.
   undefined `getDoc` placeholder with a self-contained example; so does the
   `createMarkdownRoute` TSDoc example. It no longer says to authorize in the
   resolver, which only receives the slug, and no longer claims Remix, Hono and
-  Deno support, which is untested.
-- The docs state that empty segments from `//` are dropped and only a segment
-  left empty by stripping `.md` gets `400`, that `.md` is stripped before the
-  segments are URL-decoded, that `cacheControl: ""` sends an empty
-  `Cache-Control` header, and that CI runs the tests on Node.js 24 only.
-- Development tooling moves to eslint 10, pnpm 12 and `@vllnt/typescript` 3
-  (also `@vllnt/eslint-config` 2.1.0, `prettier` ^3.10.1, `vitest` and
-  `@vitest/coverage-v8` ^5.1.1); the pnpm settings move from `package.json` to
-  `pnpm-workspace.yaml`, which adds a `minimatch` override. CI now checks
-  formatting (`pnpm format:check`).
-- Every publish (canary and stable) first runs `pnpm test:package`, which
-  installs the packed tarball into a clean project, imports every `exports`
-  entry, calls both functions and type-checks a strict TypeScript consumer. The
-  package contents check also denies `.spec.mts` and `.spec.cts` files, and CI
-  runs its test harness. CI type-checks the test files too. CI also runs
-  `pnpm test:package` on pull requests and pushes to `main`, and its temp
-  install uses the repo's 7-day release-age rule; Renovate waits 7 days too,
-  except for `@vllnt/*`.
+  Deno support, which is untested. The docs state that CI tests only Node.js 24
+  and that Next.js 16.4.6 was checked by hand.
+- The docs state that empty segments from `//` are dropped (Next.js first
+  answers `308` with the single-slash path) and only a segment left empty by
+  stripping `.md` gets `400`, that `.md` is stripped before the segments are
+  URL-decoded, that `cacheControl: ""` sends an empty `Cache-Control` header,
+  which `Headers` message Node.js 18.0.0 gives for a bad `cacheControl`, that
+  the slug includes any route prefix, that only a lowercase `.md` is stripped,
+  that serving `/` needs `app/[[...slug]]`, and that the output ends with the
+  trailing newline of `details` when no section follows.
+- Internal: development tooling moves to eslint 10, pnpm 12 and
+  `@vllnt/typescript` 3; CI and every publish test the packed tarball in a clean
+  project first.
 
 ### Fixed
 

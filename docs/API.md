@@ -128,7 +128,8 @@ malformed percent-encoding, a segment left empty by stripping `.md` (`/.md`,
 parsing resolves plain `.` and `..` segments, including `%2E` forms, before the
 handler runs (`/docs/../x` gives `["x"]`), so the resolver never receives them.
 Empty segments from `//` are dropped, not rejected (`/docs//intro.md` gives
-`["docs", "intro"]`). In Next.js, malformed percent-encoding (such as
+`["docs", "intro"]`; in Next.js the request first gets a `308` redirect to
+`/docs/intro.md`). In Next.js, malformed percent-encoding (such as
 `/docs/%E0.md`) gets Next's own `500` before the handler runs, so only the
 segment checks are seen there. Every response carries
 `X-Content-Type-Options: nosniff`. An invalid `cacheControl` value throws a
