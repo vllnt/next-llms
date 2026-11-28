@@ -23,8 +23,7 @@ matching source maps, differ.
   TSDoc links the package page.
 - `package.json` `homepage` points to
   `https://oss.vllnt.com/packages/next-llms`.
-- Every push to `main` that changes the package or its shipped docs publishes a
-  canary.
+- Every push to `main` publishes a canary.
 - The README is rewritten for coding agents: a one-sentence summary, then "For
   coding agents", "When to use", "Install", "Quick start", "API", "Common
   tasks", "Errors and fixes", "Limits and gotchas" and "Compatibility". The
