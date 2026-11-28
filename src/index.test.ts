@@ -67,7 +67,7 @@ describe("generateLlmsText", () => {
           title: "Docs\n## Fake",
           links: [
             {
-              title: "A",
+              title: "A\nB",
               url: "/a.md",
               notes: "ok\n- [evil](https://evil.test)",
             },
@@ -80,7 +80,7 @@ describe("generateLlmsText", () => {
       [
         "# Site ## Injected",
         "> line one # Heading",
-        "## Docs ## Fake\n\n- [A](/a.md): ok - [evil](https://evil.test)",
+        "## Docs ## Fake\n\n- [A B](/a.md): ok - [evil](https://evil.test)",
       ].join("\n\n"),
     );
   });
@@ -94,6 +94,7 @@ describe("generateLlmsText", () => {
           links: [
             { title: String.raw`a]b[c\d`, url: "/x y/(z)<q>.md" },
             { title: "B", url: "/p%20q.md" },
+            { title: "C", url: String.raw`/a\b.md` },
           ],
         },
       ],
@@ -105,7 +106,8 @@ describe("generateLlmsText", () => {
         String.raw`## S
 
 - [a\]b\[c\\d](/x%20y/%28z%29%3Cq%3E.md)
-- [B](/p%20q.md)`,
+- [B](/p%20q.md)
+- [C](/a%5Cb.md)`,
       ].join("\n\n"),
     );
   });
@@ -129,7 +131,7 @@ describe("generateLlmsText", () => {
     );
   });
 
-  it("keeps a trailing newline in details only when no section follows", () => {
+  it("ends the output with details' trailing newline only when no section follows", () => {
     const link = { title: "L", url: "/l.md" };
     expect(generateLlmsText({ title: "T", details: "Prose\n" })).toBe(
       "# T\n\nProse\n",
@@ -210,20 +212,22 @@ describe("generateLlmsText", () => {
 
   it("rejects blank titles and URLs", () => {
     const link = { title: "L", url: "/l.md" };
-    expect(() => generateLlmsText({ title: "" })).toThrow("title");
+    expect(() => generateLlmsText({ title: "" })).toThrow(
+      new TypeError("title must be a non-empty string"),
+    );
     expect(() => generateLlmsText({ title: "  \n " })).toThrow(TypeError);
     expect(() =>
       generateLlmsText({ title: "T", sections: [{ title: "", links: [] }] }),
-    ).toThrow("section title");
+    ).toThrow(new TypeError("section title must be a non-empty string"));
     expect(() =>
       generateLlmsText({
         title: "T",
         optional: [{ ...link, title: " " }],
       }),
-    ).toThrow("link title");
+    ).toThrow(new TypeError("link title must be a non-empty string"));
     expect(() =>
       generateLlmsText({ title: "T", optional: [{ ...link, url: "" }] }),
-    ).toThrow("link url");
+    ).toThrow(new TypeError("link url must be a non-empty string"));
   });
 });
 
@@ -429,12 +433,17 @@ describe("createMarkdownRoute", () => {
     expect(response.headers.get("Cache-Control")).toBe("no-store");
   });
 
-  it.each(["no-store\r\nX-Evil: 1", "no-\u0000store", "no-\u0100store"])(
+  it.each([
+    ["no-store\r\nX-Evil: 1", /is an invalid header value/],
+    ["no-\u0000store", /is an invalid header value/],
+    ["no-\u0100store", /ByteString/],
+  ])(
     "rejects the invalid cacheControl value %j when the handler is created",
-    (cacheControl) => {
-      expect(() => createMarkdownRoute(() => "x", { cacheControl })).toThrow(
-        TypeError,
-      );
+    (cacheControl, message) => {
+      const create = (): unknown =>
+        createMarkdownRoute(() => "x", { cacheControl });
+      expect(create).toThrow(TypeError);
+      expect(create).toThrow(message);
     },
   );
 
