@@ -42,12 +42,14 @@ fi
 echo "OK    pack: ${tarball##*/}"
 
 # 2. Install it into a clean project outside the repo. Its own
-# pnpm-workspace.yaml makes it a standalone root (no parent workspace), and a
-# local tarball has no publish date, so the release-age gate is switched off.
+# pnpm-workspace.yaml makes it a standalone root (no parent workspace). It is a
+# copy of the repo's: the project has no lockfile, so the repo's 7-day
+# release-age rule must apply there too, and its `@vllnt/*` exclusion also
+# covers the local @vllnt/next-llms tarball.
 project="$tmp/consumer"
 mkdir -p "$project"
 printf '%s\n' '{ "name": "next-llms-package-test", "private": true, "type": "module" }' > "$project/package.json"
-printf '%s\n' 'minimumReleaseAge: 0' > "$project/pnpm-workspace.yaml"
+cp "$ROOT/pnpm-workspace.yaml" "$project/pnpm-workspace.yaml"
 (cd "$project" && pnpm add "$tarball" > "$tmp/install.log" 2>&1) || {
   cat "$tmp/install.log" >&2
   echo "FAIL install: pnpm add of the tarball failed" >&2
