@@ -38,16 +38,16 @@ matching source maps, differ.
   undefined `getDoc` placeholder with a self-contained example; so does the
   `createMarkdownRoute` TSDoc example. It no longer says to authorize in the
   resolver, which only receives the slug, and no longer claims Remix, Hono and
-  Deno support, which is untested. It states that CI tests only Node.js 24 and
-  that Next.js 16.4.6 was checked by hand.
+  Deno support, which is untested. The docs state that CI tests only Node.js 24
+  and that Next.js 16.4.6 was checked by hand.
 - The docs state that empty segments from `//` are dropped (Next.js first
   answers `308` with the single-slash path) and only a segment left empty by
   stripping `.md` gets `400`, that `.md` is stripped before the segments are
   URL-decoded, that `cacheControl: ""` sends an empty `Cache-Control` header,
   which `Headers` message Node.js 18.0.0 gives for a bad `cacheControl`, that
   the slug includes any route prefix, that only a lowercase `.md` is stripped,
-  that serving `/` needs `app/[[...slug]]`, and that a trailing newline in
-  `details` is kept when no section follows.
+  that serving `/` needs `app/[[...slug]]`, and that the output ends with the
+  trailing newline of `details` when no section follows.
 - Internal: development tooling moves to eslint 10, pnpm 12 and
   `@vllnt/typescript` 3; CI and every publish test the packed tarball in a clean
   project first.
