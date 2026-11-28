@@ -52,6 +52,11 @@ matching source maps, differ.
   `@vitest/coverage-v8` ^5.1.1); the pnpm settings move from `package.json` to
   `pnpm-workspace.yaml`, which adds a `minimatch` override. CI now checks
   formatting (`pnpm format:check`).
+- Every publish (canary and stable) first runs `pnpm test:package`, which
+  installs the packed tarball into a clean project, imports every `exports`
+  entry, calls both functions and type-checks a strict TypeScript consumer. The
+  package contents check also denies `.spec.mts` and `.spec.cts` files, and CI
+  runs its test harness. CI type-checks the test files too.
 
 ### Fixed
 

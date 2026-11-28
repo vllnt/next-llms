@@ -7,11 +7,17 @@ Thanks for your interest in contributing!
 ```bash
 pnpm install
 pnpm build
+pnpm test:package
 pnpm typecheck
 pnpm lint
 pnpm format:check
 pnpm test:coverage
 ```
+
+`pnpm test:package` needs `dist/` from `pnpm build`. It packs the package,
+installs the tarball into a clean project, imports every `exports` entry, calls
+the API and type-checks a strict TypeScript consumer. `pnpm typecheck:ci` is the
+CI type-check; it covers the test files under `src/` as well as the source.
 
 ## Testing
 
@@ -40,7 +46,7 @@ test **and** at least one adversarial test (empty input, not-found, boundary).
 - One logical change per PR
 - Include tests for new behavior or bug fixes
 - Ensure all checks pass:
-  `pnpm typecheck && pnpm lint && pnpm format:check && pnpm test:coverage && pnpm build`
+  `pnpm typecheck && pnpm lint && pnpm format:check && pnpm test:coverage && pnpm build && pnpm test:package`
 
 ## Releases
 
