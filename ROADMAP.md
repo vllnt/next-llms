@@ -21,8 +21,7 @@ publishing, no Convex.
 - `scaffold-repo.1` — `done` — `package.json` (zero runtime deps, author object,
   funding, engines, `publishConfig`, sideEffects), tsconfig set,
   `eslint.config.js` (base `@vllnt/eslint-config`), prettier,
-  `vitest.config.mts` (node env, 100% thresholds), renovate, `.gitignore`, MIT
-  `LICENSE`.
+  `vitest.config.mts` (node env, 100% thresholds), `.gitignore`, MIT `LICENSE`.
 - `scaffold-repo.2` — `done` — CI (`ci.yml` lint/typecheck/test/build), canary
   `publish.yml` (`@canary`-only, OIDC provenance), `email-guard.yml`, `.github/`
   templates.

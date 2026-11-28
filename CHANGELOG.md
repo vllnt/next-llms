@@ -50,7 +50,8 @@ matching source maps, differ.
   trailing newline of `details` when no section follows.
 - Internal: development tooling moves to eslint 10, pnpm 12 and
   `@vllnt/typescript` 3; CI and every publish test the packed tarball in a clean
-  project first.
+  project first; there is no update bot, and CI sets up pnpm through Corepack,
+  so every workflow action is GitHub's own and pinned to a commit.
 
 ### Fixed
 
