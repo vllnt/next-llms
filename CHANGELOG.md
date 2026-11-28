@@ -56,7 +56,10 @@ matching source maps, differ.
   installs the packed tarball into a clean project, imports every `exports`
   entry, calls both functions and type-checks a strict TypeScript consumer. The
   package contents check also denies `.spec.mts` and `.spec.cts` files, and CI
-  runs its test harness. CI type-checks the test files too.
+  runs its test harness. CI type-checks the test files too. CI also runs
+  `pnpm test:package` on pull requests and pushes to `main`, and its temp
+  install uses the repo's 7-day release-age rule; Renovate waits 7 days too,
+  except for `@vllnt/*`.
 
 ### Fixed
 
