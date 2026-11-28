@@ -40,6 +40,13 @@ test **and** at least one adversarial test (empty input, not-found, boundary).
 - No `any` — use `unknown` + type guards
 - Explicit return types on public APIs
 
+## Dependencies
+
+Dependency updates are a manual pass; there is no version-update bot. pnpm's
+`minimumReleaseAge` in `pnpm-workspace.yaml` holds every new version back for 7
+days, except `@vllnt/*`. GitHub's own security alerts and Dependabot security
+updates stay on.
+
 ## Pull Requests
 
 - Target `main`
